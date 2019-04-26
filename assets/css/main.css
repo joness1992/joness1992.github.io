@@ -1,0 +1,10 @@
+.white-key {
+	width: 30px;
+	height: 80px;
+	border: 1px solid black;
+	display: inline-flex
+}
+
+.white-key:focus, .white-key:active {
+	background-color: red;
+}

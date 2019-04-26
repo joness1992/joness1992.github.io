@@ -3,8 +3,8 @@ var synth = new Tone.Synth().toMaster();
 
 var whiteKeys = document.getElementsByClassName('white-key');
 
-var startNote = function () {
-	synth.triggerAttack(this.getAttribute("data-tone"));
+var startNote = function (event) {
+	synth.triggerAttack(event.target.getAttribute("data-tone"));
 }
 
 var endNote = function () {
@@ -16,7 +16,7 @@ for (var i = 0; i < whiteKeys.length; i++) {
 	whiteKeys[i].addEventListener('touchstart', function(e) {
 	  e.stopPropagation();
 	  e.preventDefault();
-	  startNote();
+	  startNote(event);
 	});
 	whiteKeys[i].addEventListener('mouseup', endNote);
 	whiteKeys[i].addEventListener('touchend', function(e) {

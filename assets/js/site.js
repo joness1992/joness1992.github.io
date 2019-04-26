@@ -13,7 +13,15 @@ var endNote = function () {
 
 for (var i = 0; i < whiteKeys.length; i++) {
 	whiteKeys[i].addEventListener('mousedown', startNote);
-	whiteKeys[i].addEventListener('touchstart', startNote);
+	whiteKeys[i].addEventListener('touchstart', function(e) {
+	  e.stopPropagation();
+	  e.preventDefault();
+	  startNote();
+	});
 	whiteKeys[i].addEventListener('mouseup', endNote);
-	whiteKeys[i].addEventListener('touchend', endNote);
+	whiteKeys[i].addEventListener('touchend', function(e) {
+	  e.stopPropagation();
+	  e.preventDefault();
+	  endNote();
+	});
 }

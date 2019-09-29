@@ -2,9 +2,14 @@
 	width: 30px;
 	height: 80px;
 	border: 1px solid black;
-	display: inline-flex
+	display: inline-flex;
+	user-select: none;
 }
 
-.white-key:focus, .white-key:active {
+.white-key:hover {
+	background-color: yellow;
+}
+
+.white-key:hover:focus, .white-key.white-key--active {
 	background-color: red;
 }

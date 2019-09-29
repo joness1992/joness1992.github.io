@@ -64,7 +64,7 @@ function deactivateKey(key) {
 
 function play(inputNotes) {
 	var time = 0;
-	var notes = [[0,"C4"], ["1","D4"], ["2","E4"], ["3","C4"], ["3.5","D4"], ["4","E4"], ["4.5",null,0.5]];
+	var notes = [[0,"E4"], ["0:1","D4"], ["0:2","C4"], ["0:3","D4"], ["0:4","E4"], ["1:1","E4"], ["1:2","E4", "2n"], ["1:4","D4"], ["2:1","D4"], ["2:2","D4"], ["2:4","E4"], ["3:1","G4"], ["3:2","G4"], ["3:4","E4"], ["4:1","D4"], ["4:2","C4"], ["4:3","D4"], ["4:4","E4"], ["5:1","E4"], ["5:2","E4"], ["5:3","E4"], ["5:4","D4"], ["6:1","D4"], ["6:2","E4"], ["6:3","D4"], ["6:4","C4","n"]];
 	for ( var i = 0; i < inputNotes.length; i++) {
 		var inputNote = inputNotes[i];
 		//console.log("[" + i + "] time:[" + time + "] inputNote.length:[" + inputNote.length + "]");
@@ -85,7 +85,7 @@ function play(inputNotes) {
 	  notes
 	);
 	synthPart.start(0);
-	synthPart.loop = 3;
-	synthPart.loopEnd = 4.5;
+	//synthPart.loop = 3;
+	//synthPart.loopEnd = 4.5;
 	Tone.Transport.start();
 }

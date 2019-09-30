@@ -12,7 +12,22 @@ document.addEventListener('mousedown', e => {
   }
 });
 
+document.addEventListener('touchstart', e => {
+  mouseDown = true;
+  if (hoveredKey !== null) {
+	  activateKey(hoveredKey);
+  }
+});
+
 document.addEventListener('mouseup', e => {
+  mouseDown = false;
+  synth.triggerRelease();
+  if (hoveredKey !== null) {
+	deactivateKey(hoveredKey);
+  }
+});
+
+document.addEventListener('touchend', e => {
   mouseDown = false;
   synth.triggerRelease();
   if (hoveredKey !== null) {
@@ -62,30 +77,63 @@ function deactivateKey(key) {
 	key.classList.remove("white-key--active")
 }
 
-function play(inputNotes) {
-	var time = 0;
-	var notes = [[0,"E4"], ["0:1","D4"], ["0:2","C4"], ["0:3","D4"], ["0:4","E4"], ["1:1","E4"], ["1:2","E4", "2n"], ["1:4","D4"], ["2:1","D4"], ["2:2","D4"], ["2:4","E4"], ["3:1","G4"], ["3:2","G4"], ["3:4","E4"], ["4:1","D4"], ["4:2","C4"], ["4:3","D4"], ["4:4","E4"], ["5:1","E4"], ["5:2","E4"], ["5:3","E4"], ["5:4","D4"], ["6:1","D4"], ["6:2","E4"], ["6:3","D4"], ["6:4","C4","n"]];
-	for ( var i = 0; i < inputNotes.length; i++) {
-		var inputNote = inputNotes[i];
-		//console.log("[" + i + "] time:[" + time + "] inputNote.length:[" + inputNote.length + "]");
-		//synth.triggerAttackRelease(inputNote.note, inputNote.length, time);
-		//time += time + parseFloat(inputNote.length) + 0.5;
-		//notes.push(inputNote.note);
+function addToNotes(notes, note, length) {
+	var lastTime = 0;
+	var lastDuration = 0;
+	if (notes.length > 0) {
+		lastTime = notes[notes.length - 1].time;
+		lastDuration = notes[notes.length - 1].dur;
 	}
+	
+	var time = Tone.Time(lastTime) + Tone.Time(lastDuration);
+	var newNote = {time: Tone.Time(time).toBarsBeatsSixteenths(), note: note, dur: length};
+	notes.push(newNote);
+	return notes;
+}
+
+function play(inputNotes) {
+	var notes = [];
+	addToNotes(notes, "E4", "0:0:6");
+	addToNotes(notes, "D4", "0:0:2");
+	addToNotes(notes, "C4", "0:1");
+	addToNotes(notes, "D4", "0:1");
+	addToNotes(notes, "E4", "0:1");
+	addToNotes(notes, "E4", "0:1");
+	addToNotes(notes, "E4", "0:2");
+	addToNotes(notes, "D4", "0:1");
+	addToNotes(notes, "D4", "0:1");
+	addToNotes(notes, "D4", "0:2");
+	addToNotes(notes, "E4", "0:1");
+	addToNotes(notes, "G4", "0:1");
+	addToNotes(notes, "G4", "0:2");
+	addToNotes(notes, "E4", "0:0:6");
+	addToNotes(notes, "D4", "0:0:2");
+	addToNotes(notes, "C4", "0:1");
+	addToNotes(notes, "D4", "0:1");
+	addToNotes(notes, "E4", "0:1");
+	addToNotes(notes, "E4", "0:1");
+	addToNotes(notes, "E4", "0:1");
+	addToNotes(notes, "E4", "0:1");
+	addToNotes(notes, "D4", "0:1");
+	addToNotes(notes, "D4", "0:1");
+	addToNotes(notes, "E4", "0:1");
+	addToNotes(notes, "D4", "0:1");
+	addToNotes(notes, "C4", "1:0");
+	
 	const synthPart = new Tone.Part(
-	  function(time, note) {
-		  console.log(time);
-		synth.triggerAttackRelease(note, "10hz", time);
+	  function(time, event) {
+		synth.triggerAttackRelease(event.note, event.dur, time);
 		var keys = document.querySelectorAll("[data-tone]");
 		for (var i = 0; i < keys.length; i++) {
 			keys[i].classList.remove("white-key--active");
 		}
-		document.querySelectorAll("[data-tone='" + note + "']")[0].classList.add("white-key--active");
+		document.querySelectorAll("[data-tone='" + event.note + "']")[0].classList.add("white-key--active");
 	  },
 	  notes
 	);
 	synthPart.start(0);
-	//synthPart.loop = 3;
-	//synthPart.loopEnd = 4.5;
+	var endTime = Tone.Time(notes[notes.length - 1].time).toSeconds() + Tone.Time(notes[notes.length - 1].dur, "n").toSeconds();
+	synthPart.stop(endTime);
 	Tone.Transport.start();
+	Tone.Transport.stop(endTime);
 }

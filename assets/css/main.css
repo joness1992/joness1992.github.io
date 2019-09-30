@@ -10,6 +10,6 @@
 	background-color: yellow;
 }
 
-.white-key:hover:focus, .white-key.white-key--active {
+.white-key:hover:focus, .white-key:hover:active, .white-key.white-key--active {
 	background-color: red;
 }

@@ -12,27 +12,36 @@ document.addEventListener('mousedown', e => {
   }
 });
 
-document.addEventListener('touchstart', e => {
-  mouseDown = true;
-  if (hoveredKey !== null) {
-	  activateKey(hoveredKey);
-  }
-});
-
 document.addEventListener('mouseup', e => {
   mouseDown = false;
   synth.triggerRelease();
   if (hoveredKey !== null) {
 	deactivateKey(hoveredKey);
   }
+  hoveredKey = null
+});
+
+document.addEventListener('touchmove', e => {
+	var xPos = e.touches[0].pageX;
+	var yPos = e.touches[0].pageY;
+	var touchedElement = document.elementFromPoint(xPos, yPos);
+	if (touchedElement.classList.contains("key")){
+		if (touchedElement != hoveredKey) {
+			if (hoveredKey != null) {
+				deactivateKey(hoveredKey);
+			}
+			hoveredKey = touchedElement;
+			activateKey(hoveredKey);
+		}
+	}
 });
 
 document.addEventListener('touchend', e => {
-  mouseDown = false;
-  synth.triggerRelease();
-  if (hoveredKey !== null) {
-	deactivateKey(hoveredKey);
-  }
+	synth.triggerRelease();
+	if (hoveredKey !== null) {
+		deactivateKey(hoveredKey);
+	}
+	hoveredKey = null
 });
 
 for (var i = 0; i < keys.length; i++) {
@@ -42,18 +51,18 @@ for (var i = 0; i < keys.length; i++) {
 			activateKey(hoveredKey);
 		}
 	});
-	keys[i].addEventListener('touchmove', e => {
-		hoveredKey = e.target;
-		if (mouseDown) {
-			activateKey(hoveredKey);
-		}
-	});
 	keys[i].addEventListener('mouseout', e => {
-		deactivateKey(hoveredKey);
+		if (hoveredKey !== null) {
+			deactivateKey(hoveredKey);
+		}
 		hoveredKey = null;
 		if (mouseDown) {
 			synth.triggerRelease();
 		}
+	});
+	keys[i].addEventListener('touchstart', e => {
+		hoveredKey = e.target;
+		activateKey(e.target);
 	});
 }
 

@@ -83,7 +83,7 @@ document.getElementById("input").addEventListener('submit', e => {
 });
 
 function activateKey(key) {
-	synth.triggerRelease();
+	//synth.triggerRelease();
 	var tone = key.getAttribute("data-tone") + key.parentElement.parentElement.getAttribute("data-octave-value");
 	synth.triggerAttack(tone);
 	key.classList.add("white-key--active");

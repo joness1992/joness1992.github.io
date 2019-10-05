@@ -1,7 +1,7 @@
 //create a synth and connect it to the master output (your speakers)
 var synth = new Tone.Synth().toMaster();
 
-var whiteKeys = document.getElementsByClassName('white-key');
+var keys = document.getElementsByClassName('key');
 var hoveredKey = null;
 var mouseDown = false;
 
@@ -35,14 +35,20 @@ document.addEventListener('touchend', e => {
   }
 });
 
-for (var i = 0; i < whiteKeys.length; i++) {
-	whiteKeys[i].addEventListener('mouseover', e => {
+for (var i = 0; i < keys.length; i++) {
+	keys[i].addEventListener('mouseover', e => {
 		hoveredKey = e.target;
 		if (mouseDown) {
 			activateKey(hoveredKey);
 		}
 	});
-	whiteKeys[i].addEventListener('mouseout', e => {
+	keys[i].addEventListener('touchmove', e => {
+		hoveredKey = e.target;
+		if (mouseDown) {
+			activateKey(hoveredKey);
+		}
+	});
+	keys[i].addEventListener('mouseout', e => {
 		deactivateKey(hoveredKey);
 		hoveredKey = null;
 		if (mouseDown) {
@@ -69,7 +75,8 @@ document.getElementById("input").addEventListener('submit', e => {
 
 function activateKey(key) {
 	synth.triggerRelease();
-	synth.triggerAttack(key.getAttribute("data-tone"));
+	var tone = key.getAttribute("data-tone") + key.parentElement.parentElement.getAttribute("data-octave-value");
+	synth.triggerAttack(tone);
 	key.classList.add("white-key--active");
 }
 
@@ -93,32 +100,32 @@ function addToNotes(notes, note, length) {
 
 function play(inputNotes) {
 	var notes = [];
-	addToNotes(notes, "E4", "0:0:6");
+	addToNotes(notes, "E4", "0:1:2");
 	addToNotes(notes, "D4", "0:0:2");
-	addToNotes(notes, "C4", "0:1");
-	addToNotes(notes, "D4", "0:1");
-	addToNotes(notes, "E4", "0:1");
-	addToNotes(notes, "E4", "0:1");
-	addToNotes(notes, "E4", "0:2");
-	addToNotes(notes, "D4", "0:1");
-	addToNotes(notes, "D4", "0:1");
-	addToNotes(notes, "D4", "0:2");
-	addToNotes(notes, "E4", "0:1");
-	addToNotes(notes, "G4", "0:1");
-	addToNotes(notes, "G4", "0:2");
-	addToNotes(notes, "E4", "0:0:6");
+	addToNotes(notes, "C4", "0:1:0");
+	addToNotes(notes, "D4", "0:1:0");
+	addToNotes(notes, "E4", "0:1:0");
+	addToNotes(notes, "E4", "0:1:0");
+	addToNotes(notes, "E4", "0:2:0");
+	addToNotes(notes, "D4", "0:1:0");
+	addToNotes(notes, "D4", "0:1:0");
+	addToNotes(notes, "D4", "0:2:0");
+	addToNotes(notes, "E4", "0:1:0");
+	addToNotes(notes, "G4", "0:1:0");
+	addToNotes(notes, "G4", "0:2:0");
+	addToNotes(notes, "E4", "0:1:2");
 	addToNotes(notes, "D4", "0:0:2");
-	addToNotes(notes, "C4", "0:1");
-	addToNotes(notes, "D4", "0:1");
-	addToNotes(notes, "E4", "0:1");
-	addToNotes(notes, "E4", "0:1");
-	addToNotes(notes, "E4", "0:1");
-	addToNotes(notes, "E4", "0:1");
-	addToNotes(notes, "D4", "0:1");
-	addToNotes(notes, "D4", "0:1");
-	addToNotes(notes, "E4", "0:1");
-	addToNotes(notes, "D4", "0:1");
-	addToNotes(notes, "C4", "1:0");
+	addToNotes(notes, "C4", "0:1:0");
+	addToNotes(notes, "D4", "0:1:0");
+	addToNotes(notes, "E4", "0:1:0");
+	addToNotes(notes, "E4", "0:1:0");
+	addToNotes(notes, "E4", "0:1:0");
+	addToNotes(notes, "E4", "0:1:0");
+	addToNotes(notes, "D4", "0:1:0");
+	addToNotes(notes, "D4", "0:1:0");
+	addToNotes(notes, "E4", "0:1:0");
+	addToNotes(notes, "D4", "0:1:0");
+	addToNotes(notes, "C4", "1:0:0");
 	
 	const synthPart = new Tone.Part(
 	  function(time, event) {
@@ -127,7 +134,9 @@ function play(inputNotes) {
 		for (var i = 0; i < keys.length; i++) {
 			keys[i].classList.remove("white-key--active");
 		}
-		document.querySelectorAll("[data-tone='" + event.note + "']")[0].classList.add("white-key--active");
+		var octave = event.note.charAt(event.note.length-1);
+		var key = event.note.substring(0, event.note.length - 1);
+		document.querySelectorAll("[data-octave-value='" + octave + "']")[0].querySelectorAll("[data-tone='" + key + "']")[0].classList.add("white-key--active");
 	  },
 	  notes
 	);

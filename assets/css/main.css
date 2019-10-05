@@ -1,15 +1,63 @@
+#keyboard {
+	position: relative;
+	height: 90px;
+	display:flex;
+}
+
+.octave {
+	width: 175px;
+    position: relative;
+	height: 100%;
+}
+
+.white-keys {
+	position:absolute;
+	display:flex;
+	height: 100%;
+	width: 100%;
+}
+
+.black-keys {
+	position:absolute;
+	display:flex;
+	z-index: 1;
+	width: 100%;
+}
+
+.gap {
+	width: calc(100%/7);
+	height: 40px;
+	display: inline-flex;
+	user-select: none;
+}
+
+.black-key:first-of-type {
+	margin-left: 18px;
+}
+
 .white-key {
-	width: 30px;
-	height: 80px;
+	width: 25px;
+	height: 100%;
 	border: 1px solid black;
 	display: inline-flex;
 	user-select: none;
 }
 
-.white-key:hover {
+.black-key {
+	width: 14px;
+	height: 55px;
+	border: 1px solid black;
+	display: inline-flex;
+	user-select: none;
+	background-color: black;
+	color: white;
+	margin-left: 9px;
+}
+
+.key:hover {
 	background-color: yellow;
 }
 
-.white-key:hover:focus, .white-key:hover:active, .white-key.white-key--active {
+.key:hover:focus, .key:hover:active, .key.white-key--active {
 	background-color: red;
 }

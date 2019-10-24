@@ -1,7 +1,12 @@
+h2 {
+	font-size: 30px;
+}
+
 #keyboard {
 	position: relative;
 	height: 90px;
 	display:flex;
+	justify-content: center;
 }
 
 .octave {
@@ -60,4 +65,438 @@
 
 .key:hover:focus, .key:hover:active, .key.white-key--active {
 	background-color: red;
+}
+
+.key.white-key--secondary {
+	background-color: blue;
+}
+
+.center {
+	width: 100%;
+	text-align: center;
+}
+
+.button.play {
+  width: 74px;
+  height: 74px;
+  border-style: solid;
+  border-width: 37px 0px 37px 74px;
+  border-color: transparent transparent transparent #202020;
+  box-sizing: border-box;
+  background-color: transparent;
+  margin: 2em 0;
+}
+
+.button.pause {
+  width: 74px;
+  height: 74px;
+  border-style: double;
+  border-width: 0px 0px 0px 37px;
+  border-color: #202020;
+  background-color: transparent;
+  margin: 2em 0;
+}
+
+.sheet-music {
+  font-size: 0.4em;
+  margin: auto;
+  max-width: 144em;
+  padding-left: 16em;
+}
+
+.bar {
+  background-color: #ffffff;
+  background-image: url("../images/components/stave.svg");
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  float: left;
+  height: 16em;
+  position: relative;
+  width: 32em;
+}
+
+.bar::after {
+  background-color: transparent;
+  background-image: url("../images/components/bar-line.svg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  content: " ";
+  height: 16em;
+  position: absolute;
+  right: 0;
+  width: 1em;
+}
+
+.combined-bar:last-of-type .bar::after {
+	background-color: transparent;
+    background-image: url("../images/components/bold-double-bar-line.svg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 16em;
+    position: absolute;
+    right: 0;
+    width: 1.17em;
+}
+
+.combined-bar.combined-bar--active {
+	background-color: khaki;
+}
+
+.bar .stave-header {
+    background-color: #ffffff;
+    background-size: auto 100%;
+    height: 16em;
+    left: -16em;
+    position: absolute;
+    width: 16em;
+    z-index: -1;
+}
+
+.bar:first-child .stave-header {
+    background-color: #ffffff;
+}
+
+[data-duration="{\"1m\": 1}"] {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  float: left;
+  grid-column: span 4;
+  height: 2em;
+  justify-self: center;
+  margin: 0 2.58em;
+  width: 4em;
+  position: relative;
+}
+
+[data-note="null"][data-duration="{\"1m\": 1}"] {
+  grid-column: span 16;
+}
+
+[data-note] {
+	stroke: black;
+}
+
+.half-note-spacer {
+    grid-column: span 4;
+    width: auto;
+}
+
+.eighth-note-spacer {
+    grid-column: span 2;
+    width: auto;
+}
+
+.melody .active svg[data-note] {
+	fill: red;
+	stroke: red;
+}
+
+.bass .active svg[data-note] {
+	fill: blue;
+	stroke: blue;
+}
+
+[data-duration="{\"4n\": 2}"] {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  float: left;
+  grid-column: span 4;
+  height: 16em;
+  justify-self: center;
+  margin: 0 2.58em;
+  width: 2.83em;
+  position: relative;
+}
+
+[data-duration="{\"4n\": 2}"]::after {
+	content: " ";
+  grid-column: span 4;
+  width: 4em;
+}
+
+[data-duration="{\"4n\": 1}"] {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  float: left;
+  grid-column: span 4;
+  height: 16em;
+  justify-self: center;
+  margin: 0 2.58em;
+  width: 2.83em;
+  position: relative;
+}
+
+[data-duration="{\"8n\": 1}"] {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  float: left;
+  grid-column: span 2;
+  height: 16em;
+  justify-self: center;
+  margin: 0 0.58em;
+  position: relative;
+  width: 6.83em;
+}
+
+[data-note="null"][data-duration="{\"8n\": 1}"]{
+	width: 3.83em;
+	transform: translate(0, 3.5em);
+}
+
+[data-note="null"][data-duration="{\"4n\": 1}"]{
+	transform: translate(0, 0em);
+}
+               
+[data-duration="{\"4n\": 1, \"8n\": 1}"], [data-duration="{\"4n\": 3}"] {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  float: left;
+  grid-column: span 4;
+  height: 16em;
+  justify-self: center;
+  margin: 0 1.58em;
+  width: 4.83em;
+  position: relative;
+}
+
+[data-duration="{\"4n\": 1, \"8n\": 1}"]::after, [data-duration="{\"4n\": 3}"]::after {
+  content: " ";
+  grid-column: span 2;
+}
+
+.melody svg[data-note="\[\"C6\"\]"] {
+  transform: translate(0, -7em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"B5\"\]"] {
+  transform: translate(0, -7em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"A5\"\]"] {
+  transform: translate(0, -6em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"G5\"\]"] {
+  transform: translate(0, -5em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"F5\"\]"] {
+  transform: translate(0, -4em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"E5\"\]"] {
+  transform: translate(0, -3em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"D5\"\]"] {
+  transform: translate(0, -2em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"C5\"\]"] {
+  transform: translate(0, -1em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"B4\"\]"] {
+  transform: translate(0, 0);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"A4\"\]"] {
+  transform: translate(0, 1em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"G4\"\]"] {
+  transform: translate(0, 2em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"F4\"\]"] {
+  transform: translate(0, 3em);
+  position: absolute;
+}
+
+.melody svg[data-note*="\"E4\""] {
+  transform: translate(0, 4em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"D4\"\]"] {
+  transform: translate(0, 5em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"C4\"\]"] {
+  transform: translate(0, 6em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"B3\"\]"] {
+  transform: translate(0, 7em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"D4\"\]"] {
+  transform: translate(0, -7em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"C4\"\]"] {
+  transform: translate(0, -6em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"B3\"\]"] {
+  transform: translate(0, -5em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"A3\"\]"] {
+  transform: translate(0, -4em);
+  position: absolute;
+}
+
+.bass svg[data-note*="\"G3\""] {
+  transform: translate(0, -3em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"F3\"\]"] {
+  transform: translate(0, -2em);
+  position: absolute;
+}
+
+.bass svg[data-note*="\"E3\""] {
+  transform: translate(0, -1em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"D3\"\]"] {
+  transform: translate(0, 0em);
+  position: absolute;
+}
+
+.bass svg[data-note*="\"C3\""] {
+  transform: translate(0, 1em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"B2\"\]"] {
+  transform: translate(0, 2em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"A3\"\]"] {
+  transform: translate(0, 3em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"G2\"\]"] {
+  transform: translate(0, 4em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"F2\"\]"] {
+  transform: translate(0, 5em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"E2\"\]"] {
+  transform: translate(0, 6em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"D2\"\]"] {
+  transform: translate(0, 7em);
+  position: absolute;
+}
+
+
+[data-note="null"][data-duration="{\"1m\": 1}"]{
+	transform: translate(0, -1em);
+}
+
+
+@supports (display: grid) {
+  .sheet-music {
+    display: grid;
+  }
+
+  .bar {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    width: 100%;
+  }
+  
+  [data-duration="{\"4n\": 1}"] {
+    margin: 0;
+  }
+}
+
+@media (min-width: 576px) {
+
+  .combined-bar .bar::first-of-type {
+    margin-bottom: 0em;
+    margin-top: 2em;
+  }
+  
+  .combined-bar .bar {
+    margin-bottom: 2em;
+    margin-top: 0em;
+  }
+
+  @supports (display: grid) {
+    .sheet-music {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (min-width: 768px) {
+
+  .combined-bar .bar::first-of-type {
+    margin-bottom: 0em;
+    margin-top: 3em;
+  }
+  
+  .combined-bar .bar {
+    margin-bottom: 3em;
+    margin-top: 0em;
+  }
+
+  @supports (display: grid) {
+    .sheet-music {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  @supports (display: grid) {
+    .sheet-music {
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 1200px;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  @supports (display: grid) {
+    .sheet-music {
+      max-width: 1200px;
+    }
+  }
 }

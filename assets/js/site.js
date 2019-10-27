@@ -119,7 +119,7 @@ var noteUpOffsetLines;
 // Initial Set Up
 
 var synth = new Tone.Sampler(piano, { 
-	"baseUrl": "D:/Documents/Projects/Sheet Music reader/assets/samples/piano/", 
+	"baseUrl": "D:/Documents/Projects/Sheet Music reader/joness1992.github.io/assets/samples/piano/", 
 	"release" : 1,
 	"curve": "linear"
 });
@@ -486,7 +486,6 @@ function play(melody, bass, bpm) {
 		synthPart = null;
 		basePart = null;
 	}, now + endTime + 0.5);
-	console.log(now + endTime + 0.5);
 	Tone.Transport.start(now + 0.25);
 	Tone.Transport.stop(now + endTime + 1).cancel(now + endTime + 1);
 }
@@ -504,7 +503,6 @@ function createPart(synth, notes, activeClass, sheetNotes) {
 				//}, time);
 			//}
 			synth.triggerAttackRelease(event.note, event.dur, time);
-			//console.log(Tone.Master.volume.value);
 			for (var note = 0; note < event.note.length; note++) {
 				if (event.note[note] != "null") {
 					var octave = event.note[note].charAt(event.note[note].length-1);
@@ -524,8 +522,13 @@ function createPart(synth, notes, activeClass, sheetNotes) {
 		}
 		sheetNotes[playedNoteIndex].classList.add("active");
 		if (sheetNotes[playedNoteIndex].getAttribute("data-extended") != null) {
-			playedNoteIndex++;
-			sheetNotes[playedNoteIndex].classList.add("active");
+			if (activeClass == "white-key--active") {
+				melodyNoteIndex++;
+				sheetNotes[melodyNoteIndex].classList.add("active");
+			} else {
+				bassNoteIndex++;
+				sheetNotes[bassNoteIndex].classList.add("active");
+			}
 		}
 		if (activeClass == "white-key--active") {
 			melodyNoteIndex++;
@@ -555,21 +558,23 @@ function getNoteArrayLength(notes) {
 
 // Sheet Music Builder
 
-document.getElementById('addNote').addEventListener('submit', e => {
-	e.preventDefault();
-	var note = document.querySelectorAll("#addNote #note")[0].value;
-	var duration = document.querySelectorAll("#addNote #duration")[0].value;
-	var newNote = document.createElement("div");
-	var dataNote = document.createAttribute("data-note");
-	newNote.setAttributeNode(dataNote);
-	dataNote.value = note;
-	var dataDuration = document.createAttribute("data-duration");
-	dataDuration.value = duration;
-	newNote.setAttributeNode(dataDuration);
-	
-	var sheetBars = document.querySelectorAll(".sheet-music .combined-bar .melody.bar");
-	sheetBars[sheetBars.length - 1].appendChild(newNote);
-	
-	var sheetNotes = document.querySelectorAll('.melody [data-note]');
-	fillSheet(sheetNotes, true);
-});
+if (document.getElementById('addNote') != null) {
+	document.getElementById('addNote').addEventListener('submit', e => {
+		e.preventDefault();
+		var note = document.querySelectorAll("#addNote #note")[0].value;
+		var duration = document.querySelectorAll("#addNote #duration")[0].value;
+		var newNote = document.createElement("div");
+		var dataNote = document.createAttribute("data-note");
+		newNote.setAttributeNode(dataNote);
+		dataNote.value = note;
+		var dataDuration = document.createAttribute("data-duration");
+		dataDuration.value = duration;
+		newNote.setAttributeNode(dataDuration);
+		
+		var sheetBars = document.querySelectorAll(".sheet-music .combined-bar .melody.bar");
+		sheetBars[sheetBars.length - 1].appendChild(newNote);
+		
+		var sheetNotes = document.querySelectorAll('.melody [data-note]');
+		fillSheet(sheetNotes, true);
+	});
+}

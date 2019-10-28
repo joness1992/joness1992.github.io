@@ -104,6 +104,8 @@ var isExtendedNote = false;
 var notesBeingPlayed = [];
 var melodyNoteIndex = 0;
 var bassNoteIndex = 0;
+var melodyHighlightIndex = 0;
+var bassHighlightIndex = 0;
 
 var noteDowns;
 var noteDownLines;
@@ -119,7 +121,7 @@ var noteUpOffsetLines;
 // Initial Set Up
 
 var synth = new Tone.Sampler(piano, { 
-	"baseUrl": "D:/Documents/Projects/Sheet Music reader/joness1992.github.io/assets/samples/piano/", 
+	"baseUrl": "assets/samples/piano/", 
 	"release" : 1,
 	"curve": "linear"
 });
@@ -447,14 +449,15 @@ function addToNotes(notes, note, length) {
 }
 
 function play(melody, bass, bpm) {
-	//Tone.Transport.stop();
-	//Tone.Transport.position = 0;
-	//Tone.Transport._scheduledEvents = {};
+	Tone.Transport._scheduledEvents = {};
 	Tone.Transport.bpm.value = bpm;
-	synthPart = createPart(synth, melody, "white-key--active", notesBeingPlayed[0]);
+	Tone.Transport.start();
+	playPart(synth, melody, "white-key--active", notesBeingPlayed[0]);
 	melodyNoteIndex = 0;
-	basePart = createPart(synth, bass, "white-key--secondary", notesBeingPlayed[1]);
+	melodyHighlightIndex = 0;
+	playPart(synth, bass, "white-key--secondary", notesBeingPlayed[1]);
 	bassNoteIndex = 0;
+	bassHighlightIndex = 0;
 	var melodyEndTime = getNoteArrayLength(melody);
 	var bassEndTime = getNoteArrayLength(bass);
 	
@@ -462,17 +465,8 @@ function play(melody, bass, bpm) {
 	if (melodyEndTime >= endTime){
 		endTime = melodyEndTime;
 	}
-	var now = Tone.now();	
 	
-	Tone.Transport.scheduleOnce(function(time){
-		isPlaying = true;
-		synthPart.start(time);
-		synthPart.stop(time + endTime + 0.5);
-	}, now + 0.5);
-	Tone.Transport.scheduleOnce(function(time){
-		basePart.start(time);
-		basePart.stop(time + endTime + 0.5);
-	}, now + 0.5);
+	var now = Tone.now();	
 	Tone.Transport.scheduleOnce(function(time){
 		removeActiveClasses("white-key--active");
 		removeActiveClasses("white-key--secondary");
@@ -483,11 +477,57 @@ function play(melody, bass, bpm) {
 		songStarted = false;
 		document.getElementById('play').classList.toggle("play");
 		document.getElementById('play').classList.toggle("pause");
-		synthPart = null;
-		basePart = null;
 	}, now + endTime + 0.5);
-	Tone.Transport.start(now + 0.25);
-	Tone.Transport.stop(now + endTime + 1).cancel(now + endTime + 1);
+}
+
+function playPart (synth, notes, activeClass, sheetNotes) {
+	var now = Tone.now();	
+	for (var i = 0; i < notes.length; i++) {
+		Tone.Transport.scheduleOnce(function(time) {
+			var playedNoteIndex;
+			var highlightIndex;
+			if (activeClass == "white-key--active") {
+				playedNoteIndex = melodyNoteIndex;
+				highlightIndex = melodyHighlightIndex;
+			} else {
+				playedNoteIndex = bassNoteIndex;
+				highlightIndex = bassHighlightIndex;
+			}
+			var note = notes[playedNoteIndex];
+			
+			for (var sheetNote = 0; sheetNote < sheetNotes.length; sheetNote++) {
+				sheetNotes[sheetNote].classList.remove("active");
+			}
+			sheetNotes[highlightIndex].classList.add("active");
+			if (sheetNotes[highlightIndex].getAttribute("data-extended") != null) {
+				if (activeClass == "white-key--active") {
+					melodyHighlightIndex++;
+					sheetNotes[melodyHighlightIndex].classList.add("active");
+				} else {
+					bassHighlightIndex++;
+					sheetNotes[bassHighlightIndex].classList.add("active");
+				}
+			}
+			if (activeClass == "white-key--active") {
+				melodyHighlightIndex++;
+				melodyNoteIndex++;
+			} else {
+				bassHighlightIndex++;
+				bassNoteIndex++;
+			}
+			removeActiveClasses(activeClass);
+			if (note.note !== null) {
+				synth.triggerAttackRelease(note.note, note.dur);
+				for (var j = 0; j < note.note.length; j++) {
+					if (note.note[j] != "null") {
+						var octave = note.note[j].charAt(note.note[j].length-1);
+						var key = note.note[j].substring(0, note.note[j].length - 1);
+						document.querySelectorAll("[data-octave-value='" + octave + "']")[0].querySelectorAll("[data-tone='" + key + "']")[0].classList.add(activeClass);
+					}
+				}
+			}
+		}, now + notes[i].time + 0.5);
+	}
 }
 
 function createPart(synth, notes, activeClass, sheetNotes) {
@@ -558,6 +598,9 @@ function getNoteArrayLength(notes) {
 
 // Sheet Music Builder
 
+var currentBarLength = 0;
+var maxBarLength = 2;
+
 if (document.getElementById('addNote') != null) {
 	document.getElementById('addNote').addEventListener('submit', e => {
 		e.preventDefault();
@@ -572,7 +615,47 @@ if (document.getElementById('addNote') != null) {
 		newNote.setAttributeNode(dataDuration);
 		
 		var sheetBars = document.querySelectorAll(".sheet-music .combined-bar .melody.bar");
-		sheetBars[sheetBars.length - 1].appendChild(newNote);
+		var lastBar = sheetBars[sheetBars.length - 1];
+		var lastBarNotes = lastBar.querySelectorAll("div[data-note]");
+		
+		var lastBarTime = 0;
+		for (var i = 0; i < lastBarNotes.length; i++) {
+			lastBarTime += Tone.Time(JSON.parse(lastBarNotes[i].getAttribute("data-duration"))).toSeconds();
+			console.log(Tone.Time(JSON.parse(lastBarNotes[i].getAttribute("data-duration"))));
+			console.log(lastBarTime);
+		}
+		
+		//lastBarTime += Tone.Time(JSON.parse(duration)).toSeconds();
+		
+		if ((lastBarTime + Tone.Time(JSON.parse(duration)).toSeconds()) >= 2) {
+			
+			var firstTime = Tone.Time(2 - lastBarTime).toNotation();
+			var lastTime = Tone.Time(Tone.Time(JSON.parse(duration)).toSeconds() - Tone.Time(firstTime).toSeconds()).toNotation();
+			
+			var newBar = document.createElement("div");
+			newBar.classList.add("combined-bar");
+			var melodyBar = document.createElement("div");
+			melodyBar.classList.add("melody");
+			melodyBar.classList.add("bar");
+			var melodyStave = document.createElement("div");
+			melodyStave.classList.add("stave-header");
+			melodyStave.innerHTML = "<svg width='103' height='103'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#stave-header'></use></svg>";
+			melodyBar.appendChild(melodyStave);
+			newBar.appendChild(melodyBar);
+			var bassBar = document.createElement("div");
+			bassBar.classList.add("bass");
+			bassBar.classList.add("bar");
+			var bassStave = document.createElement("div");
+			bassStave.classList.add("stave-header");
+			bassStave.innerHTML = "<svg width='103' height='103'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#bass-clef'></use></svg>";
+			bassBar.appendChild(bassStave);
+			newBar.appendChild(bassBar);
+			lastBar.parentNode.parentNode.insertBefore(newBar, lastBar.parentNode.nextSibling);
+		}
+		
+		sheetBars = document.querySelectorAll(".sheet-music .combined-bar .melody.bar");
+		lastBar = sheetBars[sheetBars.length - 1];
+		lastBar.appendChild(newNote);
 		
 		var sheetNotes = document.querySelectorAll('.melody [data-note]');
 		fillSheet(sheetNotes, true);

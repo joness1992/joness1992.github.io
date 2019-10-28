@@ -129,7 +129,12 @@
 			<label for="note">Note:</label>
 			<input type="text" id="note" />
 			<label for="duration">Duration:</label>
-			<input type="text" id="duration" />
+			<select id="duration">
+				<option value='{"8n": 1}'>Eighth Note</option>
+				<option value='{"4n": 1}'>Quarter Note</option>
+				<option value='{"4n": 2}'>Half Note</option>
+				<option value='{"1m": 1}'>Whole Note</option>
+			</select>
 			<input type="submit" value="Add note" />
 		</form>
 		

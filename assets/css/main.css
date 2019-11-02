@@ -3,10 +3,21 @@ h2 {
 }
 
 #keyboard {
-	position: relative;
 	height: 90px;
 	display:flex;
 	justify-content: center;
+	position: fixed;
+	top: 0;
+    background-color: #bdbdbd;
+    z-index: 1;    
+	margin: 0 auto;
+    width: 100%;
+    border-bottom: solid black 1px;
+    padding-bottom: 2px;
+}
+
+main {
+	margin-top: 100px;
 }
 
 .octave {
@@ -20,6 +31,7 @@ h2 {
 	display:flex;
 	height: 100%;
 	width: 100%;
+	background-color: white;
 }
 
 .black-keys {
@@ -57,6 +69,11 @@ h2 {
 	background-color: black;
 	color: white;
 	margin-left: 9px;
+}
+
+.key span {
+	align-self: flex-end;
+	margin: 0 auto;
 }
 
 .key:hover {
@@ -156,7 +173,7 @@ h2 {
     background-color: #ffffff;
 }
 
-[data-duration="{\"1m\": 1}"] {
+[data-duration="{\"1m\": 1}"], [data-duration="1m"] {
   background-color: transparent;
   background-repeat: no-repeat;
   background-size: auto 100%;
@@ -169,7 +186,7 @@ h2 {
   position: relative;
 }
 
-[data-note="null"][data-duration="{\"1m\": 1}"] {
+[data-note="null"][data-duration="{\"1m\": 1}"], [data-note="null"][data-duration="1m"] {
   grid-column: span 16;
 }
 
@@ -179,6 +196,11 @@ h2 {
 
 .half-note-spacer {
     grid-column: span 4;
+    width: auto;
+}
+
+.quarter-note-spacer {
+    grid-column: span 2;
     width: auto;
 }
 
@@ -197,7 +219,12 @@ h2 {
 	stroke: blue;
 }
 
-[data-duration="{\"4n\": 2}"] {
+.melody .edit svg[data-note], .bass .edit svg[data-note] {
+	fill: orange;
+	stroke: orange;
+}
+
+[data-duration="{\"4n\": 2}"], [data-duration="2n"] {
   background-color: transparent;
   background-repeat: no-repeat;
   background-size: auto 100%;
@@ -210,13 +237,13 @@ h2 {
   position: relative;
 }
 
-[data-duration="{\"4n\": 2}"]::after {
+[data-duration="{\"4n\": 2}"]::after, [data-duration="2n"]::after {
 	content: " ";
   grid-column: span 4;
   width: 4em;
 }
 
-[data-duration="{\"4n\": 1}"] {
+[data-duration="{\"4n\": 1}"], [data-duration="4n"] {
   background-color: transparent;
   background-repeat: no-repeat;
   background-size: auto 100%;
@@ -229,7 +256,7 @@ h2 {
   position: relative;
 }
 
-[data-duration="{\"8n\": 1}"] {
+[data-duration="{\"8n\": 1}"], [data-duration="8n"] {
   background-color: transparent;
   background-repeat: no-repeat;
   background-size: auto 100%;
@@ -242,7 +269,7 @@ h2 {
   width: 6.83em;
 }
 
-[data-note="null"][data-duration="{\"8n\": 1}"]{
+[data-note="null"][data-duration="{\"8n\": 1}"], [data-note="null"][data-duration="8n"]{
 	width: 3.83em;
 	transform: translate(0, 3.5em);
 }
@@ -251,7 +278,7 @@ h2 {
 	transform: translate(0, 0em);
 }
                
-[data-duration="{\"4n\": 1, \"8n\": 1}"], [data-duration="{\"4n\": 3}"] {
+[data-duration="{\"4n\": 1, \"8n\": 1}"], [data-duration="{\"4n\": 3}"], [data-duration="4n."], [data-duration="2n."] {
   background-color: transparent;
   background-repeat: no-repeat;
   background-size: auto 100%;
@@ -264,13 +291,33 @@ h2 {
   position: relative;
 }
 
-[data-duration="{\"4n\": 1, \"8n\": 1}"]::after, [data-duration="{\"4n\": 3}"]::after {
+[data-duration="{\"4n\": 1, \"8n\": 1}"]::after, [data-duration="{\"4n\": 3}"]::after, [data-duration="4n."]::after, [data-duration="2n."]::after {
   content: " ";
   grid-column: span 2;
 }
 
+.melody svg[data-note="\[\"G6\"\]"] {
+  transform: translate(0, -12em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"F6\"\]"] {
+  transform: translate(0, -11em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"E6\"\]"] {
+  transform: translate(0, -10em);
+  position: absolute;
+}
+
+.melody svg[data-note="\[\"D6\"\]"] {
+  transform: translate(0, -9em);
+  position: absolute;
+}
+
 .melody svg[data-note="\[\"C6\"\]"] {
-  transform: translate(0, -7em);
+  transform: translate(0, -8em);
   position: absolute;
 }
 
@@ -349,6 +396,41 @@ h2 {
   position: absolute;
 }
 
+.bass svg[data-note="\[\"D5\"\]"] {
+  transform: translate(0, -14em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"C5\"\]"] {
+  transform: translate(0, -13em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"B4\"\]"] {
+  transform: translate(0, -12em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"A4\"\]"] {
+  transform: translate(0, -11em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"G4\"\]"] {
+  transform: translate(0, -10em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"F4\"\]"] {
+  transform: translate(0, -9em);
+  position: absolute;
+}
+
+.bass svg[data-note="\[\"E4\"\]"] {
+  transform: translate(0, -8em);
+  position: absolute;
+}
+
 .bass svg[data-note="\[\"D4\"\]"] {
   transform: translate(0, -7em);
   position: absolute;
@@ -369,7 +451,7 @@ h2 {
   position: absolute;
 }
 
-.bass svg[data-note*="\"G3\""] {
+.bass svg[data-note="\[\"G3\"\]"] {
   transform: translate(0, -3em);
   position: absolute;
 }
@@ -399,7 +481,7 @@ h2 {
   position: absolute;
 }
 
-.bass svg[data-note="\[\"A3\"\]"] {
+.bass svg[data-note="\[\"A2\"\]"] {
   transform: translate(0, 3em);
   position: absolute;
 }
@@ -425,7 +507,7 @@ h2 {
 }
 
 
-[data-note="null"][data-duration="{\"1m\": 1}"]{
+[data-note="null"][data-duration="{\"1m\": 1}"], [data-note="null"][data-duration="1m"]{
 	transform: translate(0, -1em);
 }
 
@@ -454,7 +536,7 @@ h2 {
   }
   
   .combined-bar .bar {
-    margin-bottom: 2em;
+    margin-bottom: 6em;
     margin-top: 0em;
   }
 
@@ -466,15 +548,19 @@ h2 {
 }
 
 @media (min-width: 768px) {
+  
+  .combined-bar .bar {
+    margin-bottom: 6em;
+    margin-top: 0em;
+  }
 
   .combined-bar .bar::first-of-type {
     margin-bottom: 0em;
     margin-top: 3em;
   }
-  
-  .combined-bar .bar {
-    margin-bottom: 3em;
-    margin-top: 0em;
+
+  .combined-bar .bar:last-of-type {
+    margin-bottom: 9em;
   }
 
   @supports (display: grid) {

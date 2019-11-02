@@ -1,0 +1,14 @@
+<svg width="82" height="192" xmlns="http://www.w3.org/2000/svg">
+ <title>eighth-note-up</title>
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <path id="svg_1" d="m26.845001,105.279993c-2.73,-4.8 1.39,-12.39 9.21,-17s16.37,-4.4 19.1,0.4s-1.39,12.39 -9.21,17s-16.36,4.4 -19.1,-0.4z"/>
+  <rect stroke="null" id="svg_2" height="67" width="2" y="25.00024" x="53.999902"/>
+  <path id="svg_3" d="m55.666669,24.666662s3.92,9.26 8.52,14.05s16.11,16.37 15.48,27.45s-3.32,13.39 -8.41,20.5c0,0 5.43,-14.05 5.43,-20.34s-2.57,-16.53 -21,-20l-0.02,-21.66z"/>
+ </g>
+</svg>

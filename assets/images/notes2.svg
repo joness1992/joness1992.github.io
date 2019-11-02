@@ -1,3 +1,5 @@
+
+
 <svg style="display: none;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="svg-ref">
 	<symbol id="stave-header" viewBox="0 0 192 192">
 		<defs>
@@ -20,103 +22,216 @@
 	  transform="translate(0 -23) scale(0.2)"/>
 	</symbol>
 	<symbol id="quarter-note-down" viewBox="0 0 34 192">
-		<path d="M31.16,87.72c2.73,4.8-1.39,12.39-9.21,17s-16.37,4.4-19.1-.4,1.39-12.39,9.21-17S28.42,82.92,31.16,87.72Z"/>
-		<rect x="-30.5" y="133.5" width="67" height="2" transform="translate(-131.5 137.5) rotate(-90)"/>
+		filled oval
+		stick down
 	</symbol>
-	<symbol id="filled-oval" viewBox="0 0 34 192">
-		<path d="M31.16,87.72c2.73,4.8-1.39,12.39-9.21,17s-16.37,4.4-19.1-.4,1.39-12.39,9.21-17S28.42,82.92,31.16,87.72Z"/>
-	</symbol>
-	<symbol id="stick-down" viewBox="0 0 34 192">
-		<rect x="-30.5" y="133.5" width="67" height="2" transform="translate(-131.5 137.5) rotate(-90)"/>
-	</symbol>
-	<symbol id="stick-up" viewBox="0 0 34 192">
-		<rect x="-2.5" y="56.5" width="67" height="2" transform="translate(88.5 26.5) rotate(90)"/>
-	</symbol>
-	<symbol id="empty-oval" viewBox="0 0 34 192">
-		<path d="M31.16,87.72c-2.73-4.8-11.28-5-19.1-.4s-11.94,12.17-9.21,17,11.28,5,19.1.4S33.89,92.51,31.16,87.72ZM19.93,101.23A18.67,18.67,0,0,1,10.81,104c-2.21,0-3.88-.63-4.49-1.7-1.22-2.14,1.2-7.7,7.75-11.53A18.67,18.67,0,0,1,23.19,88c2.21,0,3.88.63,4.49,1.7C28.9,91.84,26.48,97.39,19.93,101.23Z"/>
-	</symbol>
-	<symbol id="dot" viewBox="0 0 34 192">
-		<circle cx="40" cy="96" r="3"/>
-	</symbol>
-	<symbol id="dot-offset" viewBox="0 0 34 192">
-		<circle cx="40" cy="84" r="3"/>
-	</symbol>
-	<symbol id="eighth-curl-up" viewBox="0 0 34 192">
-		<path d="m55.666669,24.666662s3.92,9.26 8.52,14.05s16.11,16.37 15.48,27.45s-3.32,13.39 -8.41,20.5c0,0 5.43,-14.05 5.43,-20.34s-2.57,-16.53 -21,-20l-0.02,-21.66z"/>
-	</symbol>
-	<symbol id="eighth-curl-down" viewBox="0 0 34 192">
-		<path d="M4,168s3.92-8.66,8.52-13.15S28.63,139.54,28,129.18,24.68,116.65,19.59,110c0,0,5.43,13.15,5.43,19s-2.57,15.47-21,18.71Z"/>
-	</symbol>
-	<symbol id="line0" viewBox="0 0 34 192">
+	<symbol id="quarter-note-down-line" viewBox="0 0 34 192">
+		filled oval
+		stick down
 		<line x1="-6" y1="96" x2="40" y2="96" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
 	</symbol>
-	<symbol id="line1" viewBox="0 0 34 192">
+	<symbol id="quarter-note-down-line-under" viewBox="0 0 34 192">
+		filled oval
+		stick down
 		<line x1="-6" y1="108" x2="40" y2="108" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
 	</symbol>
-	<symbol id="line2" viewBox="0 0 34 192">
-		<line x1="-6" y1="120" x2="40" y2="120" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	<symbol id="quarter-note-up" viewBox="0 0 34 192">
+		filled oval
+		stick up
 	</symbol>
-	<symbol id="line3" viewBox="0 0 34 192">
-		<line x1="-6" y1="132" x2="40" y2="132" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	<symbol id="quarter-note-up-line" viewBox="0 0 34 192">
+		filled oval
+		stick up
+		<line x1="-6" y1="96" x2="40" y2="96" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
 	</symbol>
-	<symbol id="line4" viewBox="0 0 34 192">
-		<line x1="-6" y1="144" x2="40" y2="144" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	<symbol id="half-note-up" viewBox="0 0 34 192">
+		empty oval
+		stick up
 	</symbol>
-	<symbol id="line5" viewBox="0 0 34 192">
-		<line x1="-6" y1="156" x2="40" y2="156" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	<symbol id="half-note-up-line" viewBox="0 0 34 192">
+		empty oval
+		stick up
+		<line x1="-6" y1="96" x2="40" y2="96" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
 	</symbol>
-	<symbol id="line6" viewBox="0 0 34 192">
-		<line x1="-6" y1="168" x2="40" y2="168" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	<symbol id="half-note-down" viewBox="0 0 34 192">
+		empty oval
+		stick down
 	</symbol>
-	<symbol id="line7" viewBox="0 0 34 192">
-		<line x1="-6" y1="180" x2="40" y2="180" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	<symbol id="half-note-down-line" viewBox="0 0 34 192">
+		empty oval
+		stick down
+		<line x1="-6" y1="96" x2="40" y2="96" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
 	</symbol>
-	<symbol id="line8" viewBox="0 0 34 192">
-		<line x1="-6" y1="192" x2="40" y2="192" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	<symbol id="half-note-down-line-under" viewBox="0 0 34 192">
+		empty oval
+		stick down
+		<line x1="-6" y1="108" x2="40" y2="108" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
 	</symbol>
-	<symbol id="flat-bar-1" viewBox="0 0 34 192">
-		<rect x="2" y="163" width="61" height="6" />
+	<symbol id="eighth-note-up" viewBox="0 0 82 192">
+		<path d="m26.845001,105.279993c-2.73,-4.8 1.39,-12.39 9.21,-17s16.37,-4.4 19.1,0.4s-1.39,12.39 -9.21,17s-16.36,4.4 -19.1,-0.4z"/>
+		  <rect height="67" width="2" y="25" x="53"/>
+		  <path d="m55.666669,24.666662s3.92,9.26 8.52,14.05s16.11,16.37 15.48,27.45s-3.32,13.39 -8.41,20.5c0,0 5.43,-14.05 5.43,-20.34s-2.57,-16.53 -21,-20l-0.02,-21.66z"/>
 	</symbol>
-	<symbol id="flat-bar-2" viewBox="0 0 34 192">
-		<rect x="-20" y="163" width="23" height="6" />
+	<symbol id="eighth-note-up-line" viewBox="0 0 82 192">
+		<path d="m26.845001,105.279993c-2.73,-4.8 1.39,-12.39 9.21,-17s16.37,-4.4 19.1,0.4s-1.39,12.39 -9.21,17s-16.36,4.4 -19.1,-0.4z"/>
+		  <rect height="67" width="2" y="25" x="53"/>
+		  <path d="m55.666669,24.666662s3.92,9.26 8.52,14.05s16.11,16.37 15.48,27.45s-3.32,13.39 -8.41,20.5c0,0 5.43,-14.05 5.43,-20.34s-2.57,-16.53 -21,-20l-0.02,-21.66z"/>
+		<line x1="18" y1="96" x2="65" y2="96" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
 	</symbol>
-	<symbol id="flat-bar-middle" viewBox="0 0 34 192">
-		<rect x="-20" y="163" width="80" height="6" />
+	<symbol id="eighth-note-down" viewBox="0 0 34 192">
+		filled oval
+		stick down
+		<path d="M4,168s3.92-8.66,8.52-13.15S28.63,139.54,28,129.18,24.68,116.65,19.59,110c0,0,5.43,13.15,5.43,19s-2.57,15.47-21,18.71Z"/>
 	</symbol>
-	<symbol id="tie-1" viewBox="0 0 34 192">
-		<rect x="0" y="175" width="80" height="3" />
+	<symbol id="eighth-note-down-line" viewBox="0 0 34 192">
+		filled oval
+		stick down
+		<path d="M4,168s3.92-8.66,8.52-13.15S28.63,139.54,28,129.18,24.68,116.65,19.59,110c0,0,5.43,13.15,5.43,19s-2.57,15.47-21,18.71Z"/>
+		<line x1="-6" y1="96" x2="40" y2="96" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
 	</symbol>
-	<symbol id="tie-2" viewBox="0 0 34 192">
-		<rect x="-10" y="175" width="14" height="3" />
+	<symbol id="eighth-note-down-line-under" viewBox="0 0 34 192">
+		filled oval
+		stick down
+		<path d="M4,168s3.92-8.66,8.52-13.15S28.63,139.54,28,129.18,24.68,116.65,19.59,110c0,0,5.43,13.15,5.43,19s-2.57,15.47-21,18.71Z"/>
+		<line x1="-6" y1="108" x2="40" y2="108" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	</symbol>
+	<symbol id="eighth-note-up-bar-1" viewBox="0 0 34 192">
+		filled oval
+		stick up
+		<rect x="31" y="24" width="61" height="6" />
+	</symbol>
+	<symbol id="eighth-note-up-bar-2" viewBox="0 0 34 192">
+		filled oval
+		stick up
+		<rect x="-18" y="24" width="49" height="6" />
+	</symbol>
+	<symbol id="eighth-note-up-bar-3" viewBox="0 0 34 192">
+		filled oval
+		stick up
+		<rect x="-18" y="24" width="89" height="6" />
+	</symbol>
+	<symbol id="eighth-note-down-bar-1" viewBox="0 0 34 192">
+		filled oval
+		stick down
+		<rect x="2" y="162" width="61" height="6" />
 	</symbol>
 	<symbol id="eighth-note-down-bar-skewup-1" viewBox="0 0 34 192">
-		<path d="M31.16,87.72c2.73,4.8-1.39,12.39-9.21,17s-16.37,4.4-19.1-.4,1.39-12.39,9.21-17S28.42,82.92,31.16,87.72Z"/>
-		<rect x="-30.5" y="133.5" width="67" height="2" transform="translate(-131.5 137.5) rotate(-90)"/>
+		filled oval
+		stick down
 		<rect x="2" y="162" width="61" height="6" transform="rotate(-15) skewX(-15)"/>
 	</symbol>
 	<symbol id="eighth-note-down-bar-skewdown-1" viewBox="0 0 34 192">
-		<path d="M31.16,87.72c2.73,4.8-1.39,12.39-9.21,17s-16.37,4.4-19.1-.4,1.39-12.39,9.21-17S28.42,82.92,31.16,87.72Z"/>
-		<rect x="-30.5" y="133.5" width="67" height="2" transform="translate(-131.5 137.5) rotate(-90)"/>
+		filled oval
+		stick down
 		<rect transform="rotate(15) skewX(15)" height="6" width="61" y="159" x="2"/>
 	</symbol>
 	<symbol id="eighth-note-down-bar-2" viewBox="0 0 34 192">
-		<path d="M31.16,87.72c2.73,4.8-1.39,12.39-9.21,17s-16.37,4.4-19.1-.4,1.39-12.39,9.21-17S28.42,82.92,31.16,87.72Z"/>
-		<rect x="-30.5" y="133.5" width="67" height="2" transform="translate(-131.5 137.5) rotate(-90)"/>
+		filled oval
+		stick down
 		<rect x="-31" y="162" width="34" height="6" />
 	</symbol>
 	<symbol id="eighth-note-down-bar-skewup-2" viewBox="0 0 34 192">
-		<path d="M31.16,87.72c2.73,4.8-1.39,12.39-9.21,17s-16.37,4.4-19.1-.4,1.39-12.39,9.21-17S28.42,82.92,31.16,87.72Z"/>
-		<rect x="-30.5" y="133.5" width="67" height="2" transform="translate(-131.5 137.5) rotate(-90)"/>
+		filled oval
+		stick down
 		<rect x="-31" y="158" width="35" height="6" transform="rotate(-15) skewX(-15)"/>
 	</symbol>
 	<symbol id="eighth-note-down-bar-skewdown-2" viewBox="0 0 34 192">
-		<path d="M31.16,87.72c2.73,4.8-1.39,12.39-9.21,17s-16.37,4.4-19.1-.4,1.39-12.39,9.21-17S28.42,82.92,31.16,87.72Z"/>
-		<rect x="-30.5" y="133.5" width="67" height="2" transform="translate(-131.5 137.5) rotate(-90)"/>
+		filled oval
+		stick down
 		<rect x="-31" y="158" width="35" height="6" transform="rotate(15) skewX(15)"/>
 	</symbol>
-	<symbol id="whole-note" viewBox="0 0 20 10">
-		<path  stroke-width="0.2"
-			 d="M 9.125,0.0030002594 C 4.03428,0.18520026 0,2.5856003 0,5.5030003 C 0,8.5390003 4.368,11.003 9.75,11.003 C 15.132,11.003 19.5,8.5390003 19.5,5.5030003 C 19.5,2.4670003 15.132,0.0030002594 9.75,0.0030002594 C 9.53977,0.0030002594 9.33194,-0.0043997406 9.125,0.0030002594 z M 7.5,1.0655003 C 8.8579,0.92650026 10.56798,1.5561003 12,2.8467003 C 14.14502,4.7799003 14.87122,7.4906003 13.625,8.9092003 L 13.59375,8.9405003 C 12.32289,10.3506 9.53145,9.9153003 7.375,7.9717003 C 5.21855,6.0282003 4.51039,3.2881003 5.78125,1.8780003 C 6.20818,1.4043003 6.81306,1.1358003 7.5,1.0655003 z " />
+	<symbol id="eighth-note-down-bar-3" viewBox="0 0 34 192">
+		filled oval
+		stick down
+		<rect x="-22" y="162" width="81" height="6" />
+	</symbol>
+	<symbol id="whole-note" viewBox="0 0 26 10">
+		<path stroke-width="0.2" d="m12.438118,0.003c-5.09072,0.1822 -9.125,2.5826 -9.125,5.5c0,3.036 4.368,5.5 9.75,5.5c5.382,0 9.75,-2.464 9.75,-5.5c0,-3.036 -4.368,-5.5 -9.75,-5.5c-0.21023,0 -0.41806,-0.0074 -0.625,0zm-1.625,1.0625c1.3579,-0.139 3.06798,0.4906 4.5,1.7812c2.14502,1.9332 2.87122,4.6439 1.625,6.0625l-0.03125,0.0313c-1.27086,1.4101 -4.0623,0.9748 -6.21875,-0.9688c-2.15645,-1.9435 -2.86461,-4.6836 -1.59375,-6.0937c0.42693,-0.4737 1.03181,-0.7422 1.71875,-0.8125z"/>
+	</symbol>
+	<symbol id="whole-note-line" viewBox="0 0 26 10">
+		<path stroke-width="0.2" d="m12.438118,0.003c-5.09072,0.1822 -9.125,2.5826 -9.125,5.5c0,3.036 4.368,5.5 9.75,5.5c5.382,0 9.75,-2.464 9.75,-5.5c0,-3.036 -4.368,-5.5 -9.75,-5.5c-0.21023,0 -0.41806,-0.0074 -0.625,0zm-1.625,1.0625c1.3579,-0.139 3.06798,0.4906 4.5,1.7812c2.14502,1.9332 2.87122,4.6439 1.625,6.0625l-0.03125,0.0313c-1.27086,1.4101 -4.0623,0.9748 -6.21875,-0.9688c-2.15645,-1.9435 -2.86461,-4.6836 -1.59375,-6.0937c0.42693,-0.4737 1.03181,-0.7422 1.71875,-0.8125z"/>
+		<line stroke-miterlimit="10" stroke-width="1px" y2="6" x2="26" y1="6" x1="0"/>
+	</symbol>
+	<symbol id="whole-note-line-under" viewBox="0 0 26 10">
+		<path stroke-width="0.2" d="m12.438118,0.003c-5.09072,0.1822 -9.125,2.5826 -9.125,5.5c0,3.036 4.368,5.5 9.75,5.5c5.382,0 9.75,-2.464 9.75,-5.5c0,-3.036 -4.368,-5.5 -9.75,-5.5c-0.21023,0 -0.41806,-0.0074 -0.625,0zm-1.625,1.0625c1.3579,-0.139 3.06798,0.4906 4.5,1.7812c2.14502,1.9332 2.87122,4.6439 1.625,6.0625l-0.03125,0.0313c-1.27086,1.4101 -4.0623,0.9748 -6.21875,-0.9688c-2.15645,-1.9435 -2.86461,-4.6836 -1.59375,-6.0937c0.42693,-0.4737 1.03181,-0.7422 1.71875,-0.8125z"/>
+		<line stroke-miterlimit="10" stroke-width="1px" y2="11" x2="26" y1="11" x1="0"/>
+	</symbol>
+	<symbol id="three-eighth-note-down" viewBox="0 0 34 192">
+		filled oval
+		stick down
+		<circle cx="40" cy="96" r="3"/>
+	</symbol>
+	<symbol id="three-eighth-note-up" viewBox="0 0 34 192">
+		filled oval
+		stick up
+		<circle cx="40" cy="96" r="3"/>
+	</symbol>
+	<symbol id="three-eighth-note-offset-up" viewBox="0 0 34 192">
+		filled oval
+		stick up
+		<circle cx="40" cy="84" r="3"/>
+	</symbol>
+	<symbol id="three-eighth-note-offset-down" viewBox="0 0 34 192">
+		filled oval
+		stick down
+		<circle cx="40" cy="84" r="3"/>
+	</symbol>
+	<symbol id="three-eighth-note-up-line" viewBox="0 0 34 192">
+		filled oval
+		stick up
+		<circle cx="40" cy="84" r="3"/>
+		<line x1="-6" y1="96" x2="40" y2="96" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	</symbol>
+	<symbol id="three-eighth-note-offset-down-line" viewBox="0 0 34 192">
+		filled oval
+		stick down
+		<circle cx="40" cy="84" r="3"/>
+		<line x1="-6" y1="96" x2="40" y2="96" style="fill:none;stroke-miterlimit:10;stroke-width:2px;" />
+	</symbol>
+	<symbol id="three-eighth-note-down-line-under" viewBox="0 0 58 192">
+		<path d="M14.84,104.28c-2.73-4.8,1.39-12.39,9.21-17s16.37-4.4,19.1.4-1.39,12.39-9.21,17S17.58,109.08,14.84,104.28Z"/>
+		<rect x="-18.5" y="133.5" width="67" height="2" transform="translate(-119.5 149.5) rotate(-90)"/>
+		<circle cx="53" cy="96" r="3"/>
+		<line stroke-miterlimit="10" stroke-width="2px" y2="108" x2="53" y1="108" x1="5"/>
+	</symbol>
+	
+	<symbol id="five-eighth-note-down" viewBox="0 0 58 192">
+		empty oval
+		stick down
+		<circle cx="43" cy="96" r="3"/>
+	</symbol>
+	<symbol id="five-eighth-note-up" viewBox="0 0 58 192">
+		empty oval
+		stick up
+		<circle cx="43" cy="96" r="3"/>
+	</symbol>
+	<symbol id="five-eighth-note-offset-up" viewBox="0 0 58 192">
+		empty oval
+		stick up
+		<circle cx="43" cy="84" r="3"/>
+	</symbol>
+	<symbol id="five-eighth-note-offset-down" viewBox="0 0 58 192">
+		empty oval
+		stick down
+		<circle cx="43" cy="84" r="3"/>
+	</symbol>
+	<symbol id="five-eighth-note-up-line" viewBox="0 0 58 192">
+		<path d="M31.16,87.72c-2.73-4.8-11.28-5-19.1-.4s-11.94,12.17-9.21,17,11.28,5,19.1.4S33.89,92.51,31.16,87.72ZM19.93,101.23A18.67,18.67,0,0,1,10.81,104c-2.21,0-3.88-.63-4.49-1.7-1.22-2.14,1.2-7.7,7.75-11.53A18.67,18.67,0,0,1,23.19,88c2.21,0,3.88.63,4.49,1.7C28.9,91.84,26.48,97.39,19.93,101.23Z" transform="translate(10 0)"/>
+		<rect x="-2.5" y="56.5" width="67" height="2" transform="translate(98.5 26.5) rotate(90)"/>
+		<circle cx="53" cy="84" r="3"/>
+		<line stroke-miterlimit="10" stroke-width="2px" y2="95" x2="53" y1="95" x1="0"/>
+	</symbol>
+	<symbol id="five-eighth-note-offset-down-line" viewBox="0 0 58 192">
+		<path d="M31.16,87.72c-2.73-4.8-11.28-5-19.1-.4s-11.94,12.17-9.21,17,11.28,5,19.1.4S33.89,92.51,31.16,87.72ZM19.93,101.23A18.67,18.67,0,0,1,10.81,104c-2.21,0-3.88-.63-4.49-1.7-1.22-2.14,1.2-7.7,7.75-11.53A18.67,18.67,0,0,1,23.19,88c2.21,0,3.88.63,4.49,1.7C28.9,91.84,26.48,97.39,19.93,101.23Z" transform="translate(10 0)"/>
+		<rect x="-30.5" y="133.5" width="67" height="2" transform="translate(-121.5 137.5) rotate(-90)"/>
+		<circle cx="53" cy="84" r="3"/>
+		<line stroke-miterlimit="10" stroke-width="2px" y2="95" x2="53" y1="95" x1="0"/>
+	</symbol>
+	<symbol id="five-eighth-note-down-line-under" viewBox="0 0 58 192">
+		<path d="M31.16,87.72c-2.73-4.8-11.28-5-19.1-.4s-11.94,12.17-9.21,17,11.28,5,19.1.4S33.89,92.51,31.16,87.72ZM19.93,101.23A18.67,18.67,0,0,1,10.81,104c-2.21,0-3.88-.63-4.49-1.7-1.22-2.14,1.2-7.7,7.75-11.53A18.67,18.67,0,0,1,23.19,88c2.21,0,3.88.63,4.49,1.7C28.9,91.84,26.48,97.39,19.93,101.23Z" transform="translate(10 0)"/>
+		<rect x="-30.5" y="133.5" width="67" height="2" transform="translate(-121.5 137.5) rotate(-90)"/>
+		<circle cx="53" cy="96" r="3"/>
+		<line stroke-miterlimit="10" stroke-width="2px" y2="108" x2="53" y1="108" x1="0"/>
 	</symbol>
 	<symbol id="whole-rest" viewBox="0 0 20 10">
 		<rect x="0" y="-1" width="20" height="5" />

@@ -90,33 +90,18 @@ var piano =  {
 
 // Global Variables
 
-var relativeTime = 0;
 var keys = document.getElementsByClassName('key');
 var musicBars = document.getElementsByClassName("combined-bar");
 var hoveredKey = null;
 var mouseDown = false;
-var synthPart;
-var basePart;
 var isPlaying = false;
 var songStarted = false;
-var extendedNote = 0;
 var isExtendedNote = false;
-var notesBeingPlayed = [];
 var melodyNoteIndex = 0;
 var bassNoteIndex = 0;
-var melodyHighlightIndex = 0;
-var bassHighlightIndex = 0;
-
-var noteDowns;
-var noteDownLines;
-var noteDownLineUnders;
-var noteUps;
-var noteUpLines;
-var noteDownNoOffsets;
-var noteDownOffsets;
-var noteUpNoOffsets;
-var noteUpOffsets;
-var noteUpOffsetLines;
+var melodyLength = 0;
+var bassLength = 0;
+var editingNote;
 
 // Initial Set Up
 
@@ -141,13 +126,15 @@ var bassSheetNotes = document.querySelectorAll('.bass [data-note]');
 fillSheet(melodySheetNotes, true);
 fillSheet(bassSheetNotes, false);
 
-for (var i = 0; i < musicBars.length; i++) {
-	musicBars[i].addEventListener('click', e => {
-		for (var j = 0; j < musicBars.length; j++) {
-			musicBars[j].classList.remove("combined-bar--active");
-		}
-		e.target.closest(".combined-bar").classList.add("combined-bar--active");
-	});
+if (document.getElementById("editPage") === null) {
+	for (var i = 0; i < musicBars.length; i++) {
+		musicBars[i].addEventListener('click', e => {
+			for (var j = 0; j < musicBars.length; j++) {
+				musicBars[j].classList.remove("combined-bar--active");
+			}
+			e.target.closest(".combined-bar").classList.add("combined-bar--active");
+		});
+	}
 }
 
 // Keyboard
@@ -156,6 +143,10 @@ document.addEventListener('mousedown', e => {
   mouseDown = true;
   if (hoveredKey !== null) {
 	  activateKey(hoveredKey);
+  }
+  if (e.target.closest("div[data-note]") === null || !e.target.closest("div[data-note]").classList.contains("edit")) { // Remove edit status from notes
+	  editingNote = undefined;
+	  removeActiveNotes(getNotes(".sheet-music", "melody"), "edit");
   }
 });
 
@@ -222,34 +213,70 @@ function deactivateKey(key) {
 // Sheet Music
 
 function fillSheet(sheetNotes, isMelody) {
+	var noteDowns;
+	var noteLines;
+	var hasLine0;
+	var hasLine1;
+	var hasLine2;
+	var hasLine3;
+	var hasLine4;
+	var hasLine5;
+	var hasLine6;
+	var hasLine7;
+	var hasLine8;
+	var noteDownLineUnders;
+	var noteUps;
+	var noteDownNoOffsets;
+	var noteDownOffsets;
+	var noteUpNoOffsets;
+	var noteUpOffsets;
+	var noteUpOffsetLines;
+
 	if (isMelody) {
 		noteDowns = ["B4", "C5", "D5", "E5", "F5", "G5", "A5", "B5", "C6", "D6", "E6", "F6", "G6", "A6", "B6"];
-		noteLines = ["C4", "A6"];
-		noteDownLineUnders = ["B5", "D6", "F6", "A6"];
+		hasLine0 = ["C4", "A5", "C6", "E6", "G6"];
+		hasLine1 = ["B5", "D6", "F6", "A6"];
+		hasLine2 = ["C6", "E6", "G6"];
+		hasLine3 = ["D6", "F6", "A6"];
+		hasLine4 = ["E6", "G6"];
+		hasLine5 = ["F6", "A6"];
+		hasLine6 = ["G6"];
+		hasLine7 = ["A6"];
+		hasLine8 = [];
 		noteUps = ["B3", "C4", "D4", "E4", "F4", "G4", "A4"];
-		noteOffsets = ["G4", "E4", "A5", "F5", "D5", "B4"];
-		noteUpOffsetLines = ["C4"];
+		noteOffsets = ["C4", "E4", "G4", "B4", "D5", "F5", "A5", "C6", "E6", "G6"];
 	} else {
-		noteDowns = ["D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4"];
-		noteLines = ["E2", "C4", "E4", "G4", "B4"];
-		noteDownLineUnders = ["D4"];
+		noteDowns = ["D3", "E3", "F3", "G3", "A3", "B3", "C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5", "D5"];
+		hasLine0 = ["E2", "C4", "E4", "G4", "B4", "D5", "F5"];
+		hasLine1 = ["D4", "F4", "A4", "C5", "F5"];
+		hasLine2 = ["E4", "G4", "B4", "D5", "F5"];
+		hasLine3 = ["F4", "A4", "C5", "F5"];
+		hasLine4 = ["G4", "B4", "D5", "F5"];
+		hasLine5 = ["A4", "C5", "F5"];
+		hasLine6 = ["B4", "D5", "F5"];
+		hasLine7 = ["C5", "F5"];
+		hasLine8 = ["D5", "F5"];
 		noteUps = ["D2", "E2", "F2", "G2", "A2", "B2", "C3"];
-		noteOffsets = ["G2", "B2", "D3", "F3", "A3", "C4"];
-		noteUpOffsetLines = ["E2"];
+		noteOffsets = ["E2", "G2", "B2", "D3", "F3", "A3", "C4", "E4", "G4", "B4", "D5", "F5"];
 	}
 	for (var i = 0; i < sheetNotes.length; i++) {
 		var sheetNote = sheetNotes[i];
+		while (sheetNote.firstChild) {
+			sheetNote.removeChild(sheetNote.firstChild);
+		}
 		var noteValueArr = JSON.parse(sheetNote.getAttribute("data-note"));
 		if (noteValueArr == null) {
 			noteValueArr = ["null"]
 		}
 	
 		var noteType = sheetNote.getAttribute("data-duration");
+		var noteExtended = "";
 		var isChord = noteValueArr.length > 1;
 		var firstChordNote = noteValueArr[0];
 		var lastChordNote = noteValueArr[noteValueArr.length - 1];
 		
 		var noteAlign = "";
+		var eighthCurl = ""
 		var NoOfUps = 0;
 		var NoOfDowns = 0;
 		for (var j = 0; j < noteValueArr.length; j++) {
@@ -261,9 +288,17 @@ function fillSheet(sheetNotes, isMelody) {
 			}
 		}
 		if (NoOfUps >= NoOfDowns) {
-			noteAlign = "-up";
+			noteAlign = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#stick-up'></use>";
+			eighthCurl = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#eighth-curl-up'></use>";
 		} else {
-			noteAlign = "-down";
+			noteAlign = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#stick-down'></use>";
+			eighthCurl = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#eighth-curl-down'></use>";
+		}
+		
+		if (sheetNote.getAttribute("data-extended") !== null) {
+			noteExtended = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#tie-1'></use>";
+		} else if (i > 0 && sheetNotes[i-1].getAttribute("data-extended") !== null) {
+			noteExtended = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#tie-2'></use>";
 		}
 		
 		for (var j = 0; j < noteValueArr.length; j++) {
@@ -275,204 +310,194 @@ function fillSheet(sheetNotes, isMelody) {
 			var noteOffset = "";
 			var noteBar = "";
 			
-			if (noteDownLineUnders.includes(noteValue)) {
-				noteLinePosition = "-line-under";
-			} else if (noteLines.includes(noteValue)) {
-				noteLinePosition = "-line";
+			if (hasLine0.includes(noteValue)) {
+				noteLinePosition += "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#line0'></use>";
+			}
+			if (hasLine1.includes(noteValue)) {
+				noteLinePosition += "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#line1'></use>";
+			}
+			if (hasLine2.includes(noteValue)) {
+				noteLinePosition += "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#line2'></use>";
+			}
+			if (hasLine3.includes(noteValue)) {
+				noteLinePosition += "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#line3'></use>";
+			}
+			if (hasLine4.includes(noteValue)) {
+				noteLinePosition += "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#line4'></use>";
+			}
+			if (hasLine5.includes(noteValue)) {
+				noteLinePosition += "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#line5'></use>";
+			}
+			if (hasLine6.includes(noteValue)) {
+				noteLinePosition += "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#line6'></use>";
+			}
+			if (hasLine7.includes(noteValue)) {
+				noteLinePosition += "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#line7'></use>";
+			}
+			if (hasLine8.includes(noteValue)) {
+				noteLinePosition += "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#line8'></use>";
 			}
 			
-			if (noteType === "{\"4n\": 1}") {
+			if (noteType === "{\"4n\": 1}" || noteType === "4n") {
 				if (noteValue == "null") {
-					noteSize = "quarter-rest";
+					noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#quarter-rest'></use>";
 					noteAlign = "";
 					width = "12";
 				} else {
-					noteSize = "quarter-note";
-				width = "40";
-				}
-			} else if (noteType === "{\"4n\": 2}") {
-				if (noteValue == "null") {
-					noteAlign = "";
-					noteSize = "half-rest";
-				} else {
-					noteSize = "half-note";
+					noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#filled-oval'></use>";
 					width = "40";
 				}
-			} else if (noteType === "{\"8n\": 1}") {
+			} else if (noteType === "{\"4n\": 2}" || noteType === "2n") {
 				if (noteValue == "null") {
-					noteSize = "eighth-rest";
+					noteAlign = "";
+					noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#half-rest'></use>";
+				} else {
+					noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#empty-oval'></use>";
+					width = "40";
+				}
+			} else if (noteType === "{\"8n\": 1}" || noteType === "8n") {
+				if (noteValue == "null") {
+					noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#eighth-rest'></use>";
 					noteAlign = "";
 					width = "20";
 				} else {
+					var curl = "";
 					if (isChord) {
 						if ((noteAlign == "-up" && noteValue == lastChordNote) || (noteAlign == "-down" && noteValue == firstChordNote)) {
-							noteSize = "eighth-note";
+							noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#filled-oval'></use>";
+							curl = eighthCurl;
 						} else {
-							noteSize = "quarter-note";
+							noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#filled-oval'></use>";
 						}
 					} else {
-						noteSize = "eighth-note";
+						noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#filled-oval'></use>";
+						curl = eighthCurl;
 					}
 					if (i !== 0 && sheetNotes[i+1] !== undefined && sheetNotes[i].getAttribute("data-note") == sheetNotes[i+1].getAttribute("data-note") && sheetNotes[i].getAttribute("data-duration") == sheetNotes[i+1].getAttribute("data-duration") && sheetNotes[i].parentNode == sheetNotes[i+1].parentNode && sheetNotes[i].getAttribute("data-note") == sheetNotes[i-1].getAttribute("data-note") && sheetNotes[i].getAttribute("data-duration") == sheetNotes[i-1].getAttribute("data-duration") && sheetNotes[i].parentNode == sheetNotes[i-1].parentNode) {
-						noteBar = "-bar-3";
+						noteBar = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#flat-bar-middle'></use>";
+						curl = "";
 					}
 					else if (sheetNotes[i+1] !== undefined && sheetNotes[i].getAttribute("data-note") == sheetNotes[i+1].getAttribute("data-note") && sheetNotes[i].getAttribute("data-duration") == sheetNotes[i+1].getAttribute("data-duration") && sheetNotes[i].parentNode == sheetNotes[i+1].parentNode) {
-						noteBar = "-bar-1";
-					} else if (i !== 0 &&  sheetNotes[i].getAttribute("data-note") == sheetNotes[i-1].getAttribute("data-note") && sheetNotes[i].getAttribute("data-duration") == sheetNotes[i-1].getAttribute("data-duration") && sheetNotes[i].parentNode == sheetNotes[i-1].parentNode) {
-						noteBar = "-bar-2";
+						noteBar = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#flat-bar-1'></use>";
+						curl = "";
+					} else if (i !== 0 &&  (sheetNotes[i-1].getAttribute("data-note") === sheetNotes[i].getAttribute("data-note"))  && (sheetNotes[i-1].getAttribute("data-duration") === "{\"8n\": 1}" || sheetNotes[i-1].getAttribute("data-duration") === "8n") && sheetNotes[i].parentNode == sheetNotes[i-1].parentNode) {
+						noteBar = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#flat-bar-2'></use>";
+						curl = "";
 					}
+					noteSize += curl;
 					width = "40";
 				}
-			} else if (noteType === "{\"1m\": 1}") {
+			} else if (noteType === "{\"1m\": 1}" || noteType === "1m") {
 				noteAlign = "";
 				if (noteValue == "null") {
-					noteSize = "whole-rest";
+					noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#whole-rest'></use>";
 				} else {
-					noteSize = "whole-note";
+					noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#whole-note'></use>";
 					width = "20";
 				}
-				
-				if (noteDownLineUnders.includes(noteValue)) {
-					width = "26";
-				} else if (noteLines.includes(noteValue)) {
-					width = "26";
-				}
-			} else if (noteType === "{\"4n\": 1, \"8n\": 1}") {
-				noteSize = "three-eighth-note";
+			} else if (noteType === "{\"4n\": 1, \"8n\": 1}" || noteType === "4n.") {
+				noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#filled-oval'></use>";
 				
 				if (noteOffsets.includes(noteValue)) {
-					noteOffset = "-offset";
+					noteOffset = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#dot-offset'></use>";
+				} else {
+					noteOffset = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#dot'></use>"
 				}
 				width = "29";
-			} else if (noteType === "{\"4n\": 3}") {
-				noteSize = "five-eighth-note";
+			} else if (noteType === "{\"4n\": 3}" || noteType === "2n.") {
+				noteSize = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#empty-oval'></use>";
 				
 				if (noteOffsets.includes(noteValue)) {
-					noteOffset = "-offset";
+					noteOffset = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#dot-offset'></use>";
+				} else {
+					noteOffset = "<use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#dot'></use>"
 				}
 				width = "29";
 			}
 			
 			var noteArr = noteValue != "null" ? "[\"" + noteValue + "\"]" : noteValue;
 			
-			var noteSVG = noteSize + noteOffset + noteAlign + noteLinePosition + noteBar;
+			var noteSVG = noteSize + noteOffset + noteAlign + noteLinePosition + noteBar + noteExtended;
 			
 			if (noteSVG !== "") {
 				//sheetNote.removeAttribute("data-note");
-				sheetNote.innerHTML = sheetNote.innerHTML += "<svg width='" + width + "' height='" + height + "' data-note='" + noteArr + "'><title>" + noteValue + "</title><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#" + noteSVG + "'></use></svg>";
+				sheetNote.innerHTML = sheetNote.innerHTML += "<svg width='" + width + "' height='" + height + "' data-note='" + noteArr + "'><title>" + noteValue + "</title><g>" + noteSVG + "</g></svg>";
 			}
 		}
 		
-		if (noteType === "{\"4n\": 1, \"8n\": 1}" && (sheetNote.nextElementSibling == null || !sheetNote.nextElementSibling.classList.contains("eighth-note-spacer"))) {
+		if ((noteType === "{\"4n\": 1, \"8n\": 1}" || noteType === "4n.") && (sheetNote.nextElementSibling == null || !sheetNote.nextElementSibling.classList.contains("eighth-note-spacer"))) {
 			var spacer = document.createElement("div");
 			spacer.classList.add("eighth-note-spacer");
 			sheetNote.parentNode.insertBefore(spacer, sheetNote.nextSibling);
 		}	
-		if ((noteType === "{\"4n\": 2}" || noteType === "{\"4n\": 3}") && (sheetNote.nextElementSibling == null || !sheetNote.nextElementSibling.classList.contains("half-note-spacer"))) {
+		if ((noteType === "{\"4n\": 2}" || noteType === "{\"4n\": 3}" || noteType === "2n" || noteType === "2n.") && (sheetNote.nextElementSibling == null || !sheetNote.nextElementSibling.classList.contains("half-note-spacer"))) {
 			var spacer = document.createElement("div");
 			spacer.classList.add("half-note-spacer");
 			sheetNote.parentNode.insertBefore(spacer, sheetNote.nextSibling);
-		}	
-		if (noteType === "{\"4n\": 3}" && (sheetNote.nextElementSibling == null || !sheetNote.nextElementSibling.classList.contains("half-note-spacer"))) {
-			var spacer = document.createElement("div");
-			spacer.classList.add("half-note-spacer");
-			sheetNote.parentNode.insertBefore(spacer, sheetNote.nextSibling);
-		}			
+			if (noteType === "{\"4n\": 3}" || noteType === "2n.") {
+				var spacer2 = document.createElement("div");
+				spacer2.classList.add("quarter-note-spacer");
+				sheetNote.parentNode.insertBefore(spacer2, sheetNote.nextSibling);
+			}		
+		}		
 	}
 }
 
 // Audio Playback
 
-document.getElementById("play").addEventListener('click', e => {
+document.getElementById("play").addEventListener('click', togglePlay);
+
+document.addEventListener('keydown', e => {
+	if(e.keyCode == 32){
+		togglePlay(e);
+	}
+});
+
+function togglePlay(e) {
 	e.preventDefault();
-	e.target.classList.toggle("play");
-	e.target.classList.toggle("pause");
+	var playButton = document.getElementById("play");
+	playButton.classList.toggle("play");
+	playButton.classList.toggle("pause");
 	if (!songStarted) {
-		var melody = getNotes(".sheet-music", "melody");
-		var bass = getNotes(".sheet-music", "bass");
 		var bpm = parseInt(document.getElementById("bpm").getAttribute("data-bpm"));
-		play(melody, bass, bpm);
+		play(bpm);
 		songStarted = true;
 		isPlaying = true;
 	} else {
 		isPlaying ? Tone.Transport.pause() : Tone.Transport.start();
 		isPlaying = !isPlaying;
 	}
-});
-
-document.addEventListener('keydown', e => {
-	if(e.keyCode == 32){
-		e.preventDefault();
-		isPlaying ? Tone.Transport.pause() : Tone.Transport.start();
-		isPlaying = !isPlaying;
-	}
-});
+}
 
 function getNotes(location, staff) {
-	var notes = [];
 	var selector = document.querySelectorAll(location + ' .combined-bar--active').length > 0
 		? location + ' .combined-bar--active .' + staff + ' div[data-note], .combined-bar--active~.combined-bar .' + staff + ' div[data-note]'
 		: location + ' .combined-bar .' + staff + ' div[data-note]';
-	var melody = document.querySelectorAll(selector);
-	notesBeingPlayed.push(melody);
-	for (var i = 0; i < melody.length; i++) {
-		var note = JSON.parse(melody[i].getAttribute("data-note"));
-		var duration = melody[i].getAttribute("data-duration");
-		if (duration != null && duration.includes("{")) {
-			duration = JSON.parse(duration);
-		}
-		if (melody[i].getAttribute("data-extended") !== null) {
-			isExtendedNote = true;
-			extendedNote += Tone.Time(duration);
-		} else {
-			var duration = Tone.Time(duration) + extendedNote;
-			addToNotes(notes, note, duration);
-			extendedNote = 0;
-			isExtendedNote = false;
-		}
-	}
-	relativeTime = 0
-	return notes;
+	return document.querySelectorAll(selector);
 }
 
-function addToNotes(notes, note, length) {
-	var lastDuration = 0;
-	if (notes.length > 0) {
-		relativeTime = notes[notes.length - 1].time;
-		lastDuration = notes[notes.length - 1].dur;
-	}
-	
-	var time = Tone.Time(relativeTime) + Tone.Time(lastDuration);
-	var newNote = {time: time, note: note, dur: length};
-	notes.push(newNote);
-	return notes;
-}
-
-function play(melody, bass, bpm) {
+function play(bpm) {
 	Tone.Transport._scheduledEvents = {};
 	Tone.Transport.bpm.value = bpm;
 	Tone.Transport.start();
-	playPart(synth, melody, "white-key--active", notesBeingPlayed[0]);
+	var melody = getNotes(".sheet-music", "melody");
+	playPart(synth, "white-key--active", melody);
 	melodyNoteIndex = 0;
-	melodyHighlightIndex = 0;
-	playPart(synth, bass, "white-key--secondary", notesBeingPlayed[1]);
+	var bass = getNotes(".sheet-music", "bass");
+	playPart(synth, "white-key--secondary", bass);
 	bassNoteIndex = 0;
-	bassHighlightIndex = 0;
-	var melodyEndTime = getNoteArrayLength(melody);
-	var bassEndTime = getNoteArrayLength(bass);
 	
-	var endTime = bassEndTime;
-	if (melodyEndTime >= endTime){
-		endTime = melodyEndTime;
+	var endTime = bassLength;
+	if (melodyLength >= endTime){
+		endTime = melodyLength;
 	}
 	
-	var now = Tone.now();	
+	var now = Tone.now();
 	Tone.Transport.scheduleOnce(function(time){
 		removeActiveClasses("white-key--active");
 		removeActiveClasses("white-key--secondary");
-		notesBeingPlayed[0][notesBeingPlayed[0].length - 1].classList.remove("active");
-		notesBeingPlayed[1][notesBeingPlayed[1].length - 1].classList.remove("active");
-		notesBeingPlayed = [];
+		removeActiveNotes(melody, "active");
+		removeActiveNotes(bass, "active");
 		isPlaying = false;
 		songStarted = false;
 		document.getElementById('play').classList.toggle("play");
@@ -480,106 +505,87 @@ function play(melody, bass, bpm) {
 	}, now + endTime + 0.5);
 }
 
-function playPart (synth, notes, activeClass, sheetNotes) {
+function playPart (synth, activeClass, sheetNotes) {
 	var now = Tone.now();	
-	for (var i = 0; i < notes.length; i++) {
+	var relativeTime = 0;
+	var lastDuration = 0;
+	var isExtended = false;
+	var isMelody = activeClass == "white-key--active";
+	
+	for (var i = 0; i < sheetNotes.length; i++) {
+		if (isExtended) {
+			isExtended = sheetNotes[i].getAttribute("data-extended") != null;
+			continue;
+		}
+		relativeTime = relativeTime + lastDuration;
+		lastDuration = Tone.Time(getDuration(sheetNotes, i)).toSeconds();
+		isExtended = sheetNotes[i].getAttribute("data-extended") != null;
+		
 		Tone.Transport.scheduleOnce(function(time) {
-			var playedNoteIndex;
 			var highlightIndex;
-			if (activeClass == "white-key--active") {
-				playedNoteIndex = melodyNoteIndex;
-				highlightIndex = melodyHighlightIndex;
-			} else {
-				playedNoteIndex = bassNoteIndex;
-				highlightIndex = bassHighlightIndex;
-			}
-			var note = notes[playedNoteIndex];
+			var note;
+			var duration;
 			
-			for (var sheetNote = 0; sheetNote < sheetNotes.length; sheetNote++) {
-				sheetNotes[sheetNote].classList.remove("active");
-			}
-			sheetNotes[highlightIndex].classList.add("active");
-			if (sheetNotes[highlightIndex].getAttribute("data-extended") != null) {
-				if (activeClass == "white-key--active") {
-					melodyHighlightIndex++;
-					sheetNotes[melodyHighlightIndex].classList.add("active");
-				} else {
-					bassHighlightIndex++;
-					sheetNotes[bassHighlightIndex].classList.add("active");
+			removeActiveNotes(sheetNotes, "active")
+			removeActiveClasses(activeClass);
+			
+			if (isMelody) {
+				note = JSON.parse(sheetNotes[melodyNoteIndex].getAttribute("data-note"));
+				duration = getDuration(sheetNotes, melodyNoteIndex);
+				sheetNotes[melodyNoteIndex].classList.add("active");
+				
+				while (sheetNotes[melodyNoteIndex].getAttribute("data-extended") != null) {
+					melodyNoteIndex++;
+					duration = Tone.Time(duration).toSeconds() + Tone.Time(getDuration(sheetNotes, melodyNoteIndex)).toSeconds();
+					sheetNotes[melodyNoteIndex].classList.add("active");
 				}
-			}
-			if (activeClass == "white-key--active") {
-				melodyHighlightIndex++;
 				melodyNoteIndex++;
 			} else {
-				bassHighlightIndex++;
+				note = JSON.parse(sheetNotes[bassNoteIndex].getAttribute("data-note"));
+				duration = getDuration(sheetNotes, bassNoteIndex);
+				sheetNotes[bassNoteIndex].classList.add("active");
+				
+				while (sheetNotes[bassNoteIndex].getAttribute("data-extended") != null) {
+					bassNoteIndex++;
+					sheetNotes[bassNoteIndex].classList.add("active");
+					duration = Tone.Time(duration).toSeconds() + Tone.Time(getDuration(sheetNotes, bassNoteIndex)).toSeconds();
+				}
 				bassNoteIndex++;
 			}
-			removeActiveClasses(activeClass);
-			if (note.note !== null) {
-				synth.triggerAttackRelease(note.note, note.dur);
-				for (var j = 0; j < note.note.length; j++) {
-					if (note.note[j] != "null") {
-						var octave = note.note[j].charAt(note.note[j].length-1);
-						var key = note.note[j].substring(0, note.note[j].length - 1);
+			
+			if (note !== null) {
+				synth.triggerAttackRelease(note, duration);
+				for (var j = 0; j < note.length; j++) {
+					if (note[j] != "null") {
+						var octave = note[j].charAt(note[j].length-1);
+						var key = note[j].substring(0, note[j].length - 1);
 						document.querySelectorAll("[data-octave-value='" + octave + "']")[0].querySelectorAll("[data-tone='" + key + "']")[0].classList.add(activeClass);
 					}
 				}
 			}
-		}, now + notes[i].time + 0.5);
+		}, now + relativeTime + 0.5);
+	}
+	if (isMelody) {
+		melodyLength = relativeTime + lastDuration;
+	} else {
+		bassLength = relativeTime + lastDuration;
 	}
 }
 
-function createPart(synth, notes, activeClass, sheetNotes) {
-	var part = new Tone.Part(
-	  function(time, event) {
-		removeActiveClasses(activeClass);
-		if (event.note !== null) {
-			//Tone.Master.volume.value=0;
-			//if (event.note[0]=="C5"){
-				//Tone.Transport.schedule(function(tTime){
-			//		console.log("volumed");
-			//		Tone.Master.volume.value=10;
-				//}, time);
-			//}
-			synth.triggerAttackRelease(event.note, event.dur, time);
-			for (var note = 0; note < event.note.length; note++) {
-				if (event.note[note] != "null") {
-					var octave = event.note[note].charAt(event.note[note].length-1);
-					var key = event.note[note].substring(0, event.note[note].length - 1);
-					document.querySelectorAll("[data-octave-value='" + octave + "']")[0].querySelectorAll("[data-tone='" + key + "']")[0].classList.add(activeClass);
-				}
-			}
+function getDuration (sheetNotes, noteIndex) {
+	var duration = sheetNotes[noteIndex].getAttribute("data-duration");
+	if (duration != null && duration.includes("{")) {
+		duration = JSON.parse(duration);
+	}
+	while (sheetNotes[noteIndex].getAttribute("data-extended") != null) {
+		noteIndex++;
+		var nextDuration = sheetNotes[noteIndex].getAttribute("data-duration");
+		if (nextDuration != null && nextDuration.includes("{")) {
+			nextDuration = JSON.parse(nextDuration);
 		}
-		for (var sheetNote = 0; sheetNote < sheetNotes.length; sheetNote++) {
-			sheetNotes[sheetNote].classList.remove("active");
-		}
-		var playedNoteIndex;
-		if (activeClass == "white-key--active") {
-			playedNoteIndex = melodyNoteIndex;
-		} else {
-			playedNoteIndex = bassNoteIndex;
-		}
-		sheetNotes[playedNoteIndex].classList.add("active");
-		if (sheetNotes[playedNoteIndex].getAttribute("data-extended") != null) {
-			if (activeClass == "white-key--active") {
-				melodyNoteIndex++;
-				sheetNotes[melodyNoteIndex].classList.add("active");
-			} else {
-				bassNoteIndex++;
-				sheetNotes[bassNoteIndex].classList.add("active");
-			}
-		}
-		if (activeClass == "white-key--active") {
-			melodyNoteIndex++;
-		} else {
-			bassNoteIndex++;
-		}
-	  },
-	  notes
-	);
-	part.humanize = true;
-	return part;
+		duration = Tone.Time(duration).toSeconds() + Tone.Time(nextDuration).toSeconds();
+	}
+	return duration;
 }
 
 function removeActiveClasses(activeClass) {
@@ -588,12 +594,10 @@ function removeActiveClasses(activeClass) {
 	}
 }
 
-function getNoteArrayLength(notes) {
-	if (notes.length == 0) {
-		return 0;
+function removeActiveNotes(notes, className) {
+	for (var sheetNote = 0; sheetNote < notes.length; sheetNote++) {
+		notes[sheetNote].classList.remove(className);
 	}
-	var lastNote = notes[notes.length - 1];
-	return lastNote.time + lastNote.dur;
 }
 
 // Sheet Music Builder
@@ -604,15 +608,9 @@ var maxBarLength = 2;
 if (document.getElementById('addNote') != null) {
 	document.getElementById('addNote').addEventListener('submit', e => {
 		e.preventDefault();
+		
 		var note = document.querySelectorAll("#addNote #note")[0].value;
 		var duration = document.querySelectorAll("#addNote #duration")[0].value;
-		var newNote = document.createElement("div");
-		var dataNote = document.createAttribute("data-note");
-		newNote.setAttributeNode(dataNote);
-		dataNote.value = note;
-		var dataDuration = document.createAttribute("data-duration");
-		dataDuration.value = duration;
-		newNote.setAttributeNode(dataDuration);
 		
 		var sheetBars = document.querySelectorAll(".sheet-music .combined-bar .melody.bar");
 		var lastBar = sheetBars[sheetBars.length - 1];
@@ -620,44 +618,153 @@ if (document.getElementById('addNote') != null) {
 		
 		var lastBarTime = 0;
 		for (var i = 0; i < lastBarNotes.length; i++) {
-			lastBarTime += Tone.Time(JSON.parse(lastBarNotes[i].getAttribute("data-duration"))).toSeconds();
-			console.log(Tone.Time(JSON.parse(lastBarNotes[i].getAttribute("data-duration"))));
-			console.log(lastBarTime);
+			var dur = lastBarNotes[i].getAttribute("data-duration").includes("{") 
+				? JSON.parse(lastBarNotes[i].getAttribute("data-duration"))
+				: lastBarNotes[i].getAttribute("data-duration");
+			lastBarTime += Tone.Time(dur).toSeconds();
 		}
 		
 		//lastBarTime += Tone.Time(JSON.parse(duration)).toSeconds();
 		
-		if ((lastBarTime + Tone.Time(JSON.parse(duration)).toSeconds()) >= 2) {
+		if (lastBarTime + Tone.Time(JSON.parse(duration)).toSeconds() > 2) {
+			var diff = 2 - lastBarTime;
+			var lastDuration = Tone.Time(JSON.parse(duration)).toSeconds() - diff;
+			if (diff === 1.25) {
+				addNoteToSheet(note, "2n", true);
+				addNoteToSheet(note, "8n", true);
+			} else if (diff === 1.75) {
+				addNoteToSheet(note, "2n.", true);
+				addNoteToSheet(note, "8n", true);
+			} else {
+				var firstDuration = Tone.Time(diff).toNotation();
+				addNoteToSheet(note, firstDuration, true);
+			}
 			
-			var firstTime = Tone.Time(2 - lastBarTime).toNotation();
-			var lastTime = Tone.Time(Tone.Time(JSON.parse(duration)).toSeconds() - Tone.Time(firstTime).toSeconds()).toNotation();
+			addBarToSheet(lastBar)
 			
-			var newBar = document.createElement("div");
-			newBar.classList.add("combined-bar");
-			var melodyBar = document.createElement("div");
-			melodyBar.classList.add("melody");
-			melodyBar.classList.add("bar");
-			var melodyStave = document.createElement("div");
-			melodyStave.classList.add("stave-header");
-			melodyStave.innerHTML = "<svg width='103' height='103'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#stave-header'></use></svg>";
-			melodyBar.appendChild(melodyStave);
-			newBar.appendChild(melodyBar);
-			var bassBar = document.createElement("div");
-			bassBar.classList.add("bass");
-			bassBar.classList.add("bar");
-			var bassStave = document.createElement("div");
-			bassStave.classList.add("stave-header");
-			bassStave.innerHTML = "<svg width='103' height='103'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#bass-clef'></use></svg>";
-			bassBar.appendChild(bassStave);
-			newBar.appendChild(bassBar);
-			lastBar.parentNode.parentNode.insertBefore(newBar, lastBar.parentNode.nextSibling);
+			if (lastBarTime + Tone.Time(JSON.parse(duration)).toSeconds() > 2) {
+				if (lastDuration === 1.25) {
+					addNoteToSheet(note, "2n", true);
+					addNoteToSheet(note, "8n", false);
+				} else if (lastDuration === 1.75) {
+					addNoteToSheet(note, "2n.", true);
+					addNoteToSheet(note, "8n", false);
+				} else {
+					lastDuration = Tone.Time(lastDuration).toNotation();
+					addNoteToSheet(note, lastDuration, false);
+				}
+			}
+		} else if (lastBarTime + Tone.Time(JSON.parse(duration)).toSeconds() == 2) {
+			var diff = 2 - lastBarTime;
+			var lastDuration = Tone.Time(JSON.parse(duration)).toSeconds() - diff;
+			if (diff === 1.25) {
+				addNoteToSheet(note, "2n", true);
+				addNoteToSheet(note, "8n", false);
+			} else if (diff === 1.75) {
+				addNoteToSheet(note, "2n.", true);
+				addNoteToSheet(note, "8n", false);
+			} else {
+				var firstDuration = Tone.Time(diff).toNotation();
+				addNoteToSheet(note, firstDuration, false);
+			}
+			
+			addBarToSheet(lastBar)
+		} else {
+			addNoteToSheet(note, duration, false);
 		}
 		
-		sheetBars = document.querySelectorAll(".sheet-music .combined-bar .melody.bar");
-		lastBar = sheetBars[sheetBars.length - 1];
-		lastBar.appendChild(newNote);
-		
-		var sheetNotes = document.querySelectorAll('.melody [data-note]');
-		fillSheet(sheetNotes, true);
+	});
+}
+
+function enableNoteEdit(event) {
+	if (editingNote !== undefined) {
+		editingNote.classList.remove("edit");
+	}
+	editingNote = event.target.closest("div[data-note]");
+	editingNote.classList.add("edit");
+}
+
+document.addEventListener('keydown', e => {
+	console.log(e.keyCode);
+	if (editingNote !== undefined) {
+		var currentKey = JSON.parse(editingNote.getAttribute("data-note"))[0];
+		var newKey = currentKey.split("")[0];
+		var newOctave = parseInt(currentKey.split("")[1]);
+		if (e.keyCode === 38) {
+			switch(newKey) {
+				case "C": newKey = "D"; break;
+				case "D": newKey = "E"; break;
+				case "E": newKey = "F"; break;
+				case "F": newKey = "G"; break;
+				case "G": newKey = "A"; break;
+				case "A": newKey = "B"; break;
+				case "B": newKey = "C"; newOctave++; break;
+			}
+		} else if (e.keyCode === 40) {
+			switch(newKey) {
+				case "C": newKey = "B"; newOctave--; break;
+				case "D": newKey = "C"; break;
+				case "E": newKey = "D"; break;
+				case "F": newKey = "E"; break;
+				case "G": newKey = "F"; break;
+				case "A": newKey = "G"; break;
+				case "B": newKey = "A"; break;
+			}
+		}
+		editingNote.setAttribute("data-note", '["' + newKey + newOctave + '"]');
+		fillSheet(document.querySelectorAll('.melody [data-note]'), true);
+	}
+});
+
+function addNoteToSheet(note, duration, isExtended) {
+	var newNote = document.createElement("div");
+	var dataNote = document.createAttribute("data-note");
+	newNote.setAttributeNode(dataNote);
+	dataNote.value = note;
+	var dataDuration = document.createAttribute("data-duration");
+	dataDuration.value = duration;
+	newNote.setAttributeNode(dataDuration);
+	if (isExtended) {
+		var dataExtended = document.createAttribute("data-extended");
+		dataExtended.value = "";
+		newNote.setAttributeNode(dataExtended);
+	}
+	
+	newNote.addEventListener("click", enableNoteEdit);
+	
+	var sheetBars = document.querySelectorAll(".sheet-music .combined-bar .melody.bar");
+	lastBar = sheetBars[sheetBars.length - 1];
+	lastBar.appendChild(newNote);
+	
+	var sheetNotes = document.querySelectorAll('.melody div[data-note]');
+	fillSheet(sheetNotes, true);
+}
+
+function addBarToSheet(lastBar) {
+	var newBar = document.createElement("div");
+	newBar.classList.add("combined-bar");
+	addStave(newBar, "melody", "stave-header");
+	addStave(newBar, "bass", "bass-clef");
+	lastBar.parentNode.parentNode.insertBefore(newBar, lastBar.parentNode.nextSibling);
+}
+
+function addStave(bar, type, headerSvg) {
+	var melodyBar = document.createElement("div");
+	melodyBar.classList.add(type);
+	melodyBar.classList.add("bar");
+	var melodyStave = document.createElement("div");
+	melodyStave.classList.add("stave-header");
+	melodyStave.innerHTML = "<svg width='103' height='103'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='assets/images/notes.svg#" + headerSvg + "'></use></svg>";
+	melodyBar.appendChild(melodyStave);
+	bar.appendChild(melodyBar);
+}
+
+if (document.getElementById("remove") !== null) {
+	document.getElementById("remove").addEventListener("click", e => {
+		if (editingNote !== undefined) {
+			editingNote.remove();
+			fillSheet(sheetNotes, true);
+			fillSheet(sheetNotes, false);
+		}
 	});
 }

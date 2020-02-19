@@ -1,7 +1,7 @@
 <html>
 	<head></head>
 	<body>
-		<h1>BSAC Camera Test 3</h1>
+		<h1>BSAC Camera Test 4</h1>
 		<video ></video>
 	</body>
 	<script>
@@ -16,7 +16,7 @@
 
 		if (hasGetUserMedia()) {
 			const constraints = {
-			  video: true
+			  video: { facingMode: "user" }
 			};
 
 			const video = document.querySelector('video');

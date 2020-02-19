@@ -1,7 +1,7 @@
 <html>
 	<head></head>
 	<body id="content">
-		<h1>BSAC Camera Test 11</h1>
+		<h1>BSAC Camera Test 12</h1>
 		<video id="video1" autoplay></video><br/>
 		<button id="start">Start Recording</button><br/>
 		<video id="video2" controls></video>
@@ -57,7 +57,7 @@
 				};
 
 				navigator.mediaDevices.getUserMedia(constraints).
-				  then((stream) => {handleStream}).catch(handleError);
+				  then(handleStream).catch(handleError);
 			} else {
 			  alert('getUserMedia() is not supported by your browser');
 			}

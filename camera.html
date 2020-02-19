@@ -1,0 +1,26 @@
+<html>
+	<head></head>
+	<body>
+    <h1>BSAC Video Test</h1>
+		<video ></video>
+	</body>
+	<script>
+		function hasGetUserMedia() {
+		  return !!(navigator.mediaDevices &&
+			navigator.mediaDevices.getUserMedia);
+		}
+
+		if (hasGetUserMedia()) {
+			const constraints = {
+			  video: true
+			};
+
+			const video = document.querySelector('video');
+
+			navigator.mediaDevices.getUserMedia(constraints).
+			  then((stream) => {video.srcObject = stream});
+		} else {
+		  alert('getUserMedia() is not supported by your browser');
+		}
+	</script>
+</html>

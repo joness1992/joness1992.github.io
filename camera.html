@@ -1,13 +1,17 @@
 <html>
 	<head></head>
 	<body>
-		<h1>BSAC Camera Test 2</h1>
+		<h1>BSAC Camera Test 3</h1>
 		<video ></video>
 	</body>
 	<script>
 		function hasGetUserMedia() {
 		  return !!(navigator.mediaDevices &&
 			navigator.mediaDevices.getUserMedia);
+		}
+		
+		function handleError(error) {
+		  alert('Error: ', error);
 		}
 
 		if (hasGetUserMedia()) {
@@ -18,7 +22,7 @@
 			const video = document.querySelector('video');
 
 			navigator.mediaDevices.getUserMedia(constraints).
-			  then((stream) => {video.srcObject = stream});
+			  then((stream) => {video.srcObject = stream}).catch(handleError);
 		} else {
 		  alert('getUserMedia() is not supported by your browser');
 		}

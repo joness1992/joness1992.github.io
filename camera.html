@@ -3,6 +3,7 @@
 	<body id="content">
 		<h1>BSAC Camera Test 11</h1>
 		<video id="video1" autoplay></video><br/>
+		<button id="start">Start Recording</button><br/>
 		<video id="video2" controls></video>
 	</body>
 	<script>
@@ -14,6 +15,8 @@
 			errorContainer.appendChild(errorText);
 			document.getElementById("content").appendChild(errorContainer); 
 		};
+		
+		document.getElementById("start");
 		
 		function hasGetUserMedia() {
 		  return !!(navigator.mediaDevices &&
@@ -40,22 +43,24 @@
 			setTimeout(function() {
 				mediaRecorder.stop();
 				var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
-			        chunks = [];
-			        var videoURL = URL.createObjectURL(blob);
+				chunks = [];
+				var videoURL = URL.createObjectURL(blob);
 				const video2 = document.getElementById('video2');
 			        video2.src = videoURL;
 			}, 3000)
 		}
+		
+		start.onclick = function () {
+			if (hasGetUserMedia()) {
+				const constraints = {
+				  video: true
+				};
 
-		if (hasGetUserMedia()) {
-			const constraints = {
-			  video: true
-			};
-
-			navigator.mediaDevices.getUserMedia(constraints).
-			  then((stream) => {handleStream}).catch(handleError);
-		} else {
-		  alert('getUserMedia() is not supported by your browser');
+				navigator.mediaDevices.getUserMedia(constraints).
+				  then((stream) => {handleStream}).catch(handleError);
+			} else {
+			  alert('getUserMedia() is not supported by your browser');
+			}
 		}
 	</script>
 	<style>

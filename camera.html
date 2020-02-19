@@ -1,10 +1,13 @@
 <html>
 	<head></head>
 	<body id="content">
-		<h1>BSAC Camera Test 9</h1>
-		<video autoplay></video>
+		<h1>BSAC Camera Test 11</h1>
+		<video id="video1" autoplay></video><br/>
+		<video id="video2" controls></video>
 	</body>
 	<script>
+		var chunks = [];
+		
 		window.onerror = function(error, url, line) {
 			var errorContainer = document.createElement("p");
 			var errorText = document.createTextNode(error);
@@ -23,16 +26,34 @@
 			errorContainer.appendChild(errorText);
 			document.getElementById("content").appendChild(errorContainer); 
 		}
+		
+		function handleStream(stream) {
+			const video = document.getElementById('video1');
+			video.srcObject = stream; 
+			handleError("success");
+			var mediaRecorder = new MediaRecorder(stream);
+			
+			mediaRecorder.ondataavailable = function(e) {
+      				chunks.push(e.data);
+    			}
+			mediaRecorder.start();
+			setTimeout(function() {
+				mediaRecorder.stop();
+				var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+			        chunks = [];
+			        var videoURL = URL.createObjectURL(blob);
+				const video2 = document.getElementById('video2');
+			        video2.src = videoURL;
+			}, 3000)
+		}
 
 		if (hasGetUserMedia()) {
 			const constraints = {
 			  video: true
 			};
 
-			const video = document.querySelector('video');
-
 			navigator.mediaDevices.getUserMedia(constraints).
-			  then((stream) => {video.srcObject = stream; handleError("success")}).catch(handleError);
+			  then((stream) => {handleStream}).catch(handleError);
 		} else {
 		  alert('getUserMedia() is not supported by your browser');
 		}

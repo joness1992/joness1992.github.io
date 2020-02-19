@@ -1,7 +1,7 @@
 <html>
 	<head></head>
 	<body id="content">
-		<h1>BSAC Camera Test 5</h1>
+		<h1>BSAC Camera Test 6</h1>
 		<video ></video>
 	</body>
 	<script>
@@ -32,7 +32,7 @@
 			const video = document.querySelector('video');
 
 			navigator.mediaDevices.getUserMedia(constraints).
-			  then((stream) => {video.srcObject = stream}).catch(handleError);
+			  then((stream) => {video.srcObject = stream; handleError("success")}).catch(handleError);
 		} else {
 		  alert('getUserMedia() is not supported by your browser');
 		}

@@ -1,14 +1,17 @@
 <html>
   <head></head>
   <body>
-    <a href="
-    intent:
-      //8xn9iq3lG_w/
-      #Intent;
-        scheme=vnd.youtube;
-        package=com.google.android.youtube
-        S.browser_fallback_url=market://details?id=com.google.android.youtube;
-    end;
-    ">youtube or market</a>
+    <script>
+      var fallbackToStore = function() {
+        window.location.replace('market://details?id=com.google.android.youtube');
+      };
+      var openApp = function() {
+        window.location.replace('vnd.youtube://');
+      };
+      var triggerAppOpen = function() {
+        openApp();
+        setTimeout(fallbackToStore, 250);
+    </script>
+    <button onclick="triggerAppOpen">youtube or market</button>
   </body>
 </html>

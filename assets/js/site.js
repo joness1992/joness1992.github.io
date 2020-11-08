@@ -108,7 +108,10 @@ var editingNote;
 var synth = new Tone.Sampler(piano, { 
 	"baseUrl": "assets/samples/piano/", 
 	"release" : 1,
-	"curve": "linear"
+	"curve": "linear",
+	"onload": function() {
+		$(".sheet-music").removeClass("hidden");
+	}
 });
 
 Tone.Buffer.on('error', function(error) {
@@ -670,7 +673,8 @@ if (document.getElementById('addNote') != null) {
 			
 			addBarToSheet(lastBar)
 		} else {
-			addNoteToSheet(note, duration, false);
+			var isExtended = document.getElementById("extended").checked;
+			addNoteToSheet(note, duration, isExtended);
 		}
 		
 	});

@@ -110,7 +110,7 @@ var synth = new Tone.Sampler(piano, {
 	"release" : 1,
 	"curve": "linear",
 	"onload": function() {
-		$(".sheet-music").removeClass("hidden");
+		document.getElementsByClassName("sheet-music")[0].classList.remove("hidden");
 	}
 });
 

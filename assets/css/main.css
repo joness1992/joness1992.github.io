@@ -20,6 +20,10 @@ main {
 	margin-top: 100px;
 }
 
+.hidden {
+	display: none
+}
+
 .octave {
 	width: 175px;
     position: relative;

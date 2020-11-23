@@ -108,15 +108,12 @@ var editingNote;
 var synth = new Tone.Sampler(piano, { 
 	"baseUrl": "assets/samples/piano/", 
 	"release" : 1,
-	"curve": "linear"
+	"curve": "linear",
+	"onload": document.getElementsByClassName("sheet-music")[0].classList.remove("hidden")
 });
 
 Tone.Buffer.on('error', function(error) {
 	console.log(error);
-});
-
-Tone.Buffer.on('load', function(error) {
-		document.getElementsByClassName("sheet-music")[0].classList.remove("hidden");
 });
 
 var gain = new Tone.Gain(0.2);

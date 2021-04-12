@@ -1,139 +1,17 @@
 <html>
 	<head>
-		<script src="assets/js/Tone.js"></script>
-		<link type="text/css" rel="stylesheet" charset="UTF-8" href="assets/css/main.css">
+		<style>
+			h1, p {
+				text-align: center;
+			}
+			h1 {
+				margin-top: 2em;
+				font-family: arial;
+			}
+		</style>
 	</head>
 	<body>
-	<div id="keyboard">
-		<div class="octave" data-octave-value="2">
-			<div class="white-keys">
-				<div class="key white-key" data-tone="C">C</div>
-				<div class="key white-key" data-tone="D">D</div>
-				<div class="key white-key" data-tone="E">E</div>
-				<div class="key white-key" data-tone="F">F</div>
-				<div class="key white-key" data-tone="G">G</div>
-				<div class="key white-key" data-tone="A">A</div>
-				<div class="key white-key" data-tone="B">B</div>
-			</div>
-			<div class="black-keys">
-				<div class="key black-key" data-tone="C#">C</div>
-				<div class="key black-key" data-tone="D#">D</div>
-				<div class="gap"></div>
-				<div class="key black-key" data-tone="F#">F</div>
-				<div class="key black-key" data-tone="G#">G</div>
-				<div class="key black-key" data-tone="A#">A</div>
-			</div>
-		</div>
-		<div class="octave" data-octave-value="3">
-			<div class="white-keys">
-				<div class="key white-key" data-tone="C">C</div>
-				<div class="key white-key" data-tone="D">D</div>
-				<div class="key white-key" data-tone="E">E</div>
-				<div class="key white-key" data-tone="F">F</div>
-				<div class="key white-key" data-tone="G">G</div>
-				<div class="key white-key" data-tone="A">A</div>
-				<div class="key white-key" data-tone="B">B</div>
-			</div>
-			<div class="black-keys">
-				<div class="key black-key" data-tone="C#">C</div>
-				<div class="key black-key" data-tone="D#">D</div>
-				<div class="gap"></div>
-				<div class="key black-key" data-tone="F#">F</div>
-				<div class="key black-key" data-tone="G#">G</div>
-				<div class="key black-key" data-tone="A#">A</div>
-			</div>
-		</div>
-		<div class="octave" data-octave-value="4">
-			<div class="white-keys">
-				<div class="key white-key" data-tone="C">C</div>
-				<div class="key white-key" data-tone="D">D</div>
-				<div class="key white-key" data-tone="E">E</div>
-				<div class="key white-key" data-tone="F">F</div>
-				<div class="key white-key" data-tone="G">G</div>
-				<div class="key white-key" data-tone="A">A</div>
-				<div class="key white-key" data-tone="B">B</div>
-			</div>
-			<div class="black-keys">
-				<div class="key black-key" data-tone="C#">C</div>
-				<div class="key black-key" data-tone="D#">D</div>
-				<div class="gap"></div>
-				<div class="key black-key" data-tone="F#">F</div>
-				<div class="key black-key" data-tone="G#">G</div>
-				<div class="key black-key" data-tone="A#">A</div>
-			</div>
-		</div>
-		<div class="octave" data-octave-value="5">
-			<div class="white-keys">
-				<div class="key white-key" data-tone="C">C</div>
-				<div class="key white-key" data-tone="D">D</div>
-				<div class="key white-key" data-tone="E">E</div>
-				<div class="key white-key" data-tone="F">F</div>
-				<div class="key white-key" data-tone="G">G</div>
-				<div class="key white-key" data-tone="A">A</div>
-				<div class="key white-key" data-tone="B">B</div>
-			</div>
-			<div class="black-keys">
-				<div class="key black-key" data-tone="C#">C</div>
-				<div class="key black-key" data-tone="D#">D</div>
-				<div class="gap"></div>
-				<div class="key black-key" data-tone="F#">F</div>
-				<div class="key black-key" data-tone="G#">G</div>
-				<div class="key black-key" data-tone="A#">A</div>
-			</div>
-		</div>
-		<div class="octave" data-octave-value="6">
-			<div class="white-keys">
-				<div class="key white-key" data-tone="C">C</div>
-				<div class="key white-key" data-tone="D">D</div>
-				<div class="key white-key" data-tone="E">E</div>
-				<div class="key white-key" data-tone="F">F</div>
-				<div class="key white-key" data-tone="G">G</div>
-				<div class="key white-key" data-tone="A">A</div>
-				<div class="key white-key" data-tone="B">B</div>
-			</div>
-			<div class="black-keys">
-				<div class="key black-key" data-tone="C#">C</div>
-				<div class="key black-key" data-tone="D#">D</div>
-				<div class="gap"></div>
-				<div class="key black-key" data-tone="F#">F</div>
-				<div class="key black-key" data-tone="G#">G</div>
-				<div class="key black-key" data-tone="A#">A</div>
-			</div>
-		</div>
-		<div class="octave" data-octave-value="7">
-			<div class="white-keys">
-				<div class="key white-key" data-tone="C">C</div>
-				<div class="key white-key" data-tone="D">D</div>
-				<div class="key white-key" data-tone="E">E</div>
-				<div class="key white-key" data-tone="F">F</div>
-				<div class="key white-key" data-tone="G">G</div>
-				<div class="key white-key" data-tone="A">A</div>
-				<div class="key white-key" data-tone="B">B</div>
-			</div>
-			<div class="black-keys">
-				<div class="key black-key" data-tone="C#">C</div>
-				<div class="key black-key" data-tone="D#">D</div>
-				<div class="gap"></div>
-				<div class="key black-key" data-tone="F#">F</div>
-				<div class="key black-key" data-tone="G#">G</div>
-				<div class="key black-key" data-tone="A#">A</div>
-			</div>
-		</div>
-	</div>
-		
-		<form id="input">
-			<!--<input type="text" class="note-input" value="C4"/>
-			<input type="text" class="note-input" value="D4"/>
-			<input type="text" class="note-input" value="F4"/>-->
-			<input type="submit" id="submit" />
-		</form>
-		<div id="songsheet">
-			<div class="staff">
-				<div class="bar" data-bar="0">
-				
-				</div>
-			</div>
-		</div>
-		<script src="assets/js/site.js"></script>
+		<h1>THANK FUCK PRINCE PHILIP IS DEAD</h1>
+		<p>Rot in hell cunt</p>
 	</body>
 </html>
